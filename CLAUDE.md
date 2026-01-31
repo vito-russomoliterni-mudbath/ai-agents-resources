@@ -14,6 +14,7 @@ skills/
 ├── adding-tests/                       # Adding/updating unit tests for code changes
 ├── building-features/                  # Feature development workflow
 ├── building-skills/                    # Converting workflows to Claude skills
+├── creating-subagents/                 # Creating Claude Code sub-agents
 ├── fixing-bugs/                        # Systematic debugging and bug fixing
 ├── refactoring-agent-instructions/     # Refactoring bloated agent instruction files
 └── refactoring-code/                   # Safe, incremental refactoring

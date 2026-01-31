@@ -68,6 +68,24 @@ Create or update Agent Skills-compliant skills from workflows, prompts, or exist
 
 ---
 
+### 🤖 [creating-subagents](skills/creating-subagents/)
+Create effective Claude Code sub-agents through guided task analysis and configuration design.
+
+**Use when:**
+- Creating a new sub-agent for Claude Code
+- Configuring specialized agents for specific tasks
+- Setting up delegation for complex workflows
+
+**Workflow:** Discovery → Analysis → Design → Validation → Output
+
+**Features:**
+- Decision tree for recommending optimal configurations
+- Skills and MCP server integration guidance
+- Built-in archetypes (Explorer, Implementer, Tester, etc.)
+- Always asks for user confirmation before generating
+
+---
+
 ### 🐛 [fixing-bugs](skills/fixing-bugs/)
 Systematically debug and fix software defects through identification, analysis, and validated correction.
 
