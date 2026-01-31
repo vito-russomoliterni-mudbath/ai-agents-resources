@@ -1,5 +1,27 @@
 # Changelog
 
+## [2.0.0] - 2026-01-31
+
+### Major Update: Agent Skills Open Standard
+- **building-skills skill (v2.0.0)** - Completely rewritten to follow [Agent Skills open standard](https://agentskills.io/):
+  - **Removed Claude-specific references** - Now generic for any agent following the open standard
+  - **Updated to official Agent Skills specification** - Based on documentation from agentskills.io
+  - **Corrected gerund naming guidance** - Now a recommended best practice (not required by spec)
+  - **Added proper specification requirements**:
+    - Name: lowercase kebab-case, no consecutive hyphens, can't start with hyphen
+    - Description: 1-1024 chars, third person present tense, includes keywords
+    - Optional fields: license, compatibility, metadata
+  - **Progressive disclosure guidance** - Three-tier loading model (metadata, instructions, resources)
+  - **Official validation tools** - Instructions for `skills-ref` validator
+  - **Comprehensive naming patterns** - Gerund (recommended), noun-object (valid), invalid patterns
+  - **Updated frontmatter** - Now includes proper metadata with agentskills-spec-version
+
+### Breaking Changes
+- Skill version bumped from 1.3.0 to 2.0.0
+- Removed Claude Code-specific terminology
+- Updated validation process to match Agent Skills specification
+- Changed gerund naming from "MUST" to "recommended best practice"
+
 ## [1.3.0] - 2026-01-31
 
 ### Enhanced

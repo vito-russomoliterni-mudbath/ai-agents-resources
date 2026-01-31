@@ -35,13 +35,19 @@ Quick reference for each skill's unique characteristics and workflows.
 
 ## building-skills
 
-**Purpose:** Convert AI assistant workflows into reusable Claude skills.
+**Purpose:** Convert AI assistant workflows into Agent Skills open standard compatible skills.
 
-**Key Feature:** Transforms workflows from various tools (Claude Code, Cursor, Windsurf, Aider) into properly formatted Claude skills following the Agent Skills specification.
+**Key Feature:** Transforms workflows from various tools (Claude Code, Cursor, Windsurf, Aider, etc.) into properly formatted skills following the Agent Skills open standard specification (agentskills.io).
 
-**Workflow:** Gather input → Analyze workflow → Structure skill → Generate SKILL.md → Validate → Refine
+**Workflow:** Gather input → Analyze patterns → Design structure → Validate name → Write description → Create SKILL.md → Populate resources → Validate compliance → Test
 
-**Principle:** Follow Agent Skills specification and best practices
+**Specification:** Follows Agent Skills open standard v1.0 - works with any agent that supports the format
+
+**Key Guidelines:**
+- Name: lowercase kebab-case (gerund form recommended)
+- Description: Third person present tense, 1-1024 chars, with keywords
+- Progressive disclosure: Keep SKILL.md < 500 lines, use references/ for details
+- Validation: Use official skills-ref validator
 
 ## fixing-bugs
 
