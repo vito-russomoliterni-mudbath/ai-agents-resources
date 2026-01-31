@@ -259,7 +259,7 @@ foreach ($skill in $skills) {
     }
 
     # Ask for confirmation unless -y flag is set (skip in dry-run mode)
-    $shouldInstall = $y -or $DryRun
+    $shouldInstall = $y.IsPresent -or $DryRun.IsPresent
     if (-not $shouldInstall) {
         Write-Host ""
         $action = if ($isUpdate) { "Update" } else { "Install" }
@@ -267,6 +267,9 @@ foreach ($skill in $skills) {
         # Default to Yes - only skip if user explicitly enters 'n' or 'N'
         $shouldInstall = -not ($response -match '^[Nn]')
     }
+
+    $copyAttempted = $false
+    $copySucceeded = $false
 
     if ($shouldInstall) {
         if ($DryRun) {
@@ -287,6 +290,7 @@ foreach ($skill in $skills) {
         } else {
             # Actually perform the operations
             try {
+                $copyAttempted = $true
                 # Remove old version if it exists
                 if (Test-Path $destPath) {
                     Write-Verbose-Custom "Removing old version: $destPath"
@@ -302,11 +306,10 @@ foreach ($skill in $skills) {
 
                 if ($isUpdate) {
                     Write-Success "  ✓ Updated successfully"
-                    $updated++
                 } else {
                     Write-Success "  ✓ Installed successfully"
-                    $installed++
                 }
+                $copySucceeded = $true
             } catch {
                 Write-Error-Custom "  ✗ Failed: $($_.Exception.Message)"
                 Write-Verbose-Custom "Error details: $($_.Exception.ToString())"
@@ -314,6 +317,16 @@ foreach ($skill in $skills) {
         }
     } else {
         Write-Warning-Custom "  ○ Skipped"
+        $skipped++
+    }
+
+    if ($copySucceeded) {
+        if ($isUpdate) {
+            $updated++
+        } else {
+            $installed++
+        }
+    } elseif ($copyAttempted) {
         $skipped++
     }
 

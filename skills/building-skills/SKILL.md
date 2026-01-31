@@ -54,9 +54,13 @@ Ensure the name follows Agent Skills specification requirements:
 **Required rules:**
 - ✅ Lowercase only
 - ✅ Kebab-case (words separated by hyphens)
+- ✅ Numbers allowed
 - ✅ Cannot start with hyphen
 - ✅ No consecutive hyphens (`--`)
 - ✅ Descriptive and unique
+- ✅ Max 64 characters
+- ✅ Must not contain XML tags
+- ✅ Must not be reserved words: `anthropic`, `claude`
 
 **Recommended best practice (gerund form):**
 While not required by the specification, gerund/present participle forms are commonly used in the ecosystem and clearly communicate ongoing actions:
@@ -339,6 +343,18 @@ User describes: "A skill for running unit tests automatically"
 4. `test-runner` (noun-object, valid but less recommended)
 
 Present with rationale, let user choose.
+
+## Best Practices (Short)
+- Keep instructions concise; assume the model is competent and remove unnecessary explanation.
+- Decide degrees of freedom (high/medium/low) and make it explicit in the workflow.
+- Test with every model you plan to use and revise for inconsistencies.
+- Prefer checklists and validation loops for reliability.
+- For long references, include a brief table of contents at the top.
+
+**Degrees of freedom example:**
+- High freedom: "Use best judgment to select tools and sequence steps."
+- Medium freedom: "Follow the workflow order; adjust only when blocked."
+- Low freedom: "Perform steps exactly as written; do not deviate."
 
 ## References
 
