@@ -1,4 +1,4 @@
-# AI Agents Resources
+﻿# AI Agents Resources
 
 A collection of reusable Claude Code skills for software development workflows. These skills guide Claude through common development tasks with structured, phase-based workflows that ensure quality and completeness.
 
@@ -13,32 +13,21 @@ Skills are structured workflows that guide AI coding assistants through complex 
 
 ## Available Skills
 
-### 🐛 [bug-fix](skills/fixing-bugs/)
-Systematically debug and fix software defects through identification, analysis, and validated correction.
+### 💾 [adding-memory](skills/adding-memory/)
+Capture project knowledge and best practices in appropriate documentation files.
 
 **Use when:**
-- User reports a bug or error
-- Tests are failing
-- Application exhibits incorrect behavior
-- Regressions are detected
+- User says ""remember this""
+- Documenting patterns or guidelines
+- Saving team best practices
 
-**Workflow:** Reproduce → Root cause analysis → Minimal fix → Test → Regression test
+**Workflow:** Clarify → Determine scope → Choose location → Format → Implement → Verify
+
+**Scope decision:** Personal CLAUDE.md vs Project CLAUDE.md vs Local CLAUDE.md vs Structured docs
 
 ---
 
-### ✨ [new-feature](skills/building-features/)
-Implement new features using a structured approach with planning, implementation, testing, and quality assurance.
-
-**Use when:**
-- Adding new functionality
-- Building components
-- Developing new capabilities
-
-**Workflow:** Plan → Task list → Documentation → Code → Verify → QA → Iterate
-
----
-
-### 🧪 [add-unit-tests](skills/adding-tests/)
+### 🧪 [adding-tests](skills/adding-tests/)
 Add or update unit tests for code changes and iterate until all tests pass.
 
 **Use when:**
@@ -55,35 +44,44 @@ Add or update unit tests for code changes and iterate until all tests pass.
 
 ---
 
-### ♻️ [refactor](skills/refactoring-codeing-code/)
-Safe, incremental refactoring while preserving behavior through continuous testing.
+### ✨ [building-features](skills/building-features/)
+Implement new features using a structured approach with planning, implementation, testing, and quality assurance.
 
 **Use when:**
-- Code is hard to maintain or understand
-- Duplication needs consolidation
-- Structure needs improvement
+- Adding new functionality
+- Building components
+- Developing new capabilities
 
-**Workflow:** Baseline → Detect smells → Plan → Refactor → Test → Commit → Repeat
-
-**Key principle:** Small steps, tests after each change, commit when green
+**Workflow:** Plan → Task list → Documentation → Code → Verify → QA → Iterate
 
 ---
 
-### 💾 [add-memory](skills/adding-memory/)
-Capture project knowledge and best practices in appropriate documentation files.
+### 🧰 [building-skills](skills/building-skills/)
+Create or update Agent Skills-compliant skills from workflows, prompts, or existing instructions.
 
 **Use when:**
-- User says "remember this"
-- Documenting patterns or guidelines
-- Saving team best practices
+- Creating a new skill
+- Converting a workflow or prompt into a skill
+- Updating a skill to match spec or best practices
 
-**Workflow:** Clarify → Determine scope → Choose location → Format → Implement → Verify
-
-**Scope decision:** Personal CLAUDE.md vs Project CLAUDE.md vs Local CLAUDE.md vs Structured docs
+**Workflow:** Gather input → Analyze patterns → Design structure → Validate name → Write SKILL.md → Populate resources → Validate → Test → Document
 
 ---
 
-### 📝 [agent-md-refactor](skills/refactoring-codeing-agent-instructions/)
+### 🐛 [fixing-bugs](skills/fixing-bugs/)
+Systematically debug and fix software defects through identification, analysis, and validated correction.
+
+**Use when:**
+- User reports a bug or error
+- Tests are failing
+- Application exhibits incorrect behavior
+- Regressions are detected
+
+**Workflow:** Reproduce → Root cause analysis → Minimal fix → Test → Regression test
+
+---
+
+### 📝 [refactoring-agent-instructions](skills/refactoring-agent-instructions/)
 Refactor bloated agent instruction files using progressive disclosure principles.
 
 **Use when:**
@@ -95,6 +93,19 @@ Refactor bloated agent instruction files using progressive disclosure principles
 
 **Goal:** Minimal root file (<50 lines) + categorized linked files
 
+---
+
+### ♻️ [refactoring-code](skills/refactoring-code/)
+Safe, incremental refactoring while preserving behavior through continuous testing.
+
+**Use when:**
+- Code is hard to maintain or understand
+- Duplication needs consolidation
+- Structure needs improvement
+
+**Workflow:** Baseline → Detect smells → Plan → Refactor → Test → Commit → Repeat
+
+**Key principle:** Small steps, tests after each change, commit when green
 ## Installation
 
 ### Option 1: Automated Installation (Recommended)
