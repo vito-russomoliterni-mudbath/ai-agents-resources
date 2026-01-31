@@ -1,11 +1,11 @@
 ---
-name: agent-md-refactor
+name: refactoring-agent-instructions
 description: This skill should be used when the user asks to "refactor my AGENTS.md", "refactor my CLAUDE.md", "split my agent instructions", "organize agent config", or "my instructions file is too long". It refactors bloated agent instruction files using progressive disclosure principles.
 version: 1.0.0
 license: MIT
 ---
 
-# Agent MD Refactor
+# Refactoring Agent Instructions
 
 Refactor bloated agent instruction files (AGENTS.md, CLAUDE.md, COPILOT.md, etc.) to follow **progressive disclosure principles** - keeping essentials at root and organizing the rest into linked, categorized files.
 

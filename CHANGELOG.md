@@ -1,5 +1,39 @@
 # Changelog
 
+## [1.3.0] - 2026-01-31
+
+### Enhanced
+- **building-skills skill (v1.3.0)** - Added comprehensive gerund naming validation:
+  - New workflow step to validate skill names follow gerund form (verb + -ing)
+  - Prompts user with 3-4 gerund alternatives when name doesn't conform
+  - Detailed "Skill Name Validation Process" section with examples
+  - Common name conversion patterns table (e.g., `bug-fix` → `fixing-bugs`)
+  - Clear guidance on valid vs invalid naming patterns
+
+## [1.2.0] - 2026-01-31
+
+### Added
+- **New skill: building-skills** - Converts AI assistant workflows from various tools (Claude Code, Cursor, Windsurf, Aider) into properly formatted Claude skills following the Agent Skills specification.
+
+### Changed
+- **Skill names renamed to gerund form** - Following Claude skill best practices:
+  - `add-memory` → `adding-memory`
+  - `add-unit-tests` → `adding-tests`
+  - `agent-md-refactor` → `refactoring-agent-instructions`
+  - `bug-fix` → `fixing-bugs`
+  - `new-feature` → `building-features`
+  - `refactor` → `refactoring-code`
+  - `ai-workflow-to-skill` → `building-skills`
+
+- **Installation script behavior** - Changed default prompt from `[y/N]` to `[Y/n]`:
+  - Pressing Enter now defaults to YES (install/update)
+  - Only typing `n` or `N` explicitly skips the skill
+  - More user-friendly for bulk installations
+
+### Fixed
+- Corrected PowerShell parameter syntax from `--DryRun` to `-DryRun` throughout documentation
+- Updated all skill references in README.md, CLAUDE.md, and documentation files
+
 ## [1.1.0] - 2026-01-31
 
 ### Added

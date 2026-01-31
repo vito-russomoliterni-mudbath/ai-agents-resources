@@ -1,10 +1,10 @@
 ---
-name: add-unit-tests
+name: adding-tests
 description: This skill should be used when the user asks to "add unit tests", "create tests for my changes", "test my PR", "validate unit tests", or "compare tests against develop". It adds or updates unit tests for code changes and iterates until all tests pass.
 version: 1.1.0
 ---
 
-# Add Unit Tests
+# Adding Tests
 
 ## Overview
 

@@ -1,10 +1,10 @@
 ---
-name: new-feature
+name: building-features
 description: This skill should be used when the user asks to "implement a new feature", "add functionality", "build a feature", "create a new component", or "develop new capabilities". It guides feature development through planning, implementation, testing, and quality assurance phases.
 version: 1.0.0
 ---
 
-# New Feature Workflow
+# Building Features Workflow
 
 ## Overview
 

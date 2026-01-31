@@ -2,7 +2,7 @@
 
 Quick reference for each skill's unique characteristics and workflows.
 
-## add-memory
+## adding-memory
 
 **Purpose:** Capture project knowledge and best practices in appropriate documentation files.
 
@@ -10,7 +10,7 @@ Quick reference for each skill's unique characteristics and workflows.
 
 **Workflow:** Clarify → Determine scope → Choose location → Format → Implement → Verify
 
-## add-unit-tests
+## adding-tests
 
 **Purpose:** Add or update unit tests for code changes and iterate until all tests pass.
 
@@ -23,27 +23,7 @@ Quick reference for each skill's unique characteristics and workflows.
 - Feature-focused: Target specific area
 - Coverage audit: Scan for gaps
 
-## agent-md-refactor
-
-**Purpose:** Refactor bloated agent instruction files using progressive disclosure principles.
-
-**Key Feature:** Applies progressive disclosure principles: minimal root file with links to categorized detailed files.
-
-**Workflow:** Find contradictions → Extract essentials → Categorize → Create structure → Prune
-
-**Goal:** Root file <50 lines + categorized linked files
-
-## bug-fix
-
-**Purpose:** Systematically debug and fix software defects.
-
-**Key Feature:** Follows systematic debugging approach with root cause analysis.
-
-**Workflow:** Reproduce → Root cause analysis → Minimal fix → Test → Regression test
-
-**Principle:** Fix the root cause, not symptoms
-
-## new-feature
+## building-features
 
 **Purpose:** Implement new features using a structured approach.
 
@@ -53,7 +33,37 @@ Quick reference for each skill's unique characteristics and workflows.
 
 **Principle:** Avoid over-engineering, keep solutions minimal
 
-## refactor
+## building-skills
+
+**Purpose:** Convert AI assistant workflows into reusable Claude skills.
+
+**Key Feature:** Transforms workflows from various tools (Claude Code, Cursor, Windsurf, Aider) into properly formatted Claude skills following the Agent Skills specification.
+
+**Workflow:** Gather input → Analyze workflow → Structure skill → Generate SKILL.md → Validate → Refine
+
+**Principle:** Follow Agent Skills specification and best practices
+
+## fixing-bugs
+
+**Purpose:** Systematically debug and fix software defects.
+
+**Key Feature:** Follows systematic debugging approach with root cause analysis.
+
+**Workflow:** Reproduce → Root cause analysis → Minimal fix → Test → Regression test
+
+**Principle:** Fix the root cause, not symptoms
+
+## refactoring-agent-instructions
+
+**Purpose:** Refactor bloated agent instruction files using progressive disclosure principles.
+
+**Key Feature:** Applies progressive disclosure principles: minimal root file with links to categorized detailed files.
+
+**Workflow:** Find contradictions → Extract essentials → Categorize → Create structure → Prune
+
+**Goal:** Root file <50 lines + categorized linked files
+
+## refactoring-code
 
 **Purpose:** Safe, incremental refactoring while preserving behavior.
 

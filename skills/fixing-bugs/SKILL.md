@@ -1,10 +1,10 @@
 ---
-name: bug-fix
+name: fixing-bugs
 description: This skill should be used when the user asks to "fix this bug", "debug this issue", "investigate this error", "this is broken", or "find the problem". It systematically debugs and fixes software defects through identification, analysis, and validated correction.
 version: 1.0.0
 ---
 
-# Bug Fix Workflow
+# Fixing Bugs Workflow
 
 ## Overview
 

@@ -13,7 +13,7 @@ Skills are structured workflows that guide AI coding assistants through complex 
 
 ## Available Skills
 
-### 🐛 [bug-fix](skills/bug-fix/)
+### 🐛 [bug-fix](skills/fixing-bugs/)
 Systematically debug and fix software defects through identification, analysis, and validated correction.
 
 **Use when:**
@@ -26,7 +26,7 @@ Systematically debug and fix software defects through identification, analysis, 
 
 ---
 
-### ✨ [new-feature](skills/new-feature/)
+### ✨ [new-feature](skills/building-features/)
 Implement new features using a structured approach with planning, implementation, testing, and quality assurance.
 
 **Use when:**
@@ -38,7 +38,7 @@ Implement new features using a structured approach with planning, implementation
 
 ---
 
-### 🧪 [add-unit-tests](skills/add-unit-tests/)
+### 🧪 [add-unit-tests](skills/adding-tests/)
 Add or update unit tests for code changes and iterate until all tests pass.
 
 **Use when:**
@@ -55,7 +55,7 @@ Add or update unit tests for code changes and iterate until all tests pass.
 
 ---
 
-### ♻️ [refactor](skills/refactor/)
+### ♻️ [refactor](skills/refactoring-codeing-code/)
 Safe, incremental refactoring while preserving behavior through continuous testing.
 
 **Use when:**
@@ -69,7 +69,7 @@ Safe, incremental refactoring while preserving behavior through continuous testi
 
 ---
 
-### 💾 [add-memory](skills/add-memory/)
+### 💾 [add-memory](skills/adding-memory/)
 Capture project knowledge and best practices in appropriate documentation files.
 
 **Use when:**
@@ -83,7 +83,7 @@ Capture project knowledge and best practices in appropriate documentation files.
 
 ---
 
-### 📝 [agent-md-refactor](skills/agent-md-refactor/)
+### 📝 [agent-md-refactor](skills/refactoring-codeing-agent-instructions/)
 Refactor bloated agent instruction files using progressive disclosure principles.
 
 **Use when:**
@@ -158,12 +158,12 @@ Copy any skill directory from `skills/` into your `~/.claude/skills/` directory.
 Skills can be invoked using the `/skill-name` syntax in Claude Code:
 
 ```
-/bug-fix "Login form throws error when password is empty"
-/new-feature "Add dark mode toggle to header"
-/add-unit-tests
-/refactor
-/add-memory "Always use async/await for database operations"
-/agent-md-refactor
+/fixing-bugs "Login form throws error when password is empty"
+/building-features "Add dark mode toggle to header"
+/adding-tests
+/refactoring-code
+/adding-memory "Always use async/await for database operations"
+/refactoring-agent-instructions
 ```
 
 ### Manual Workflow

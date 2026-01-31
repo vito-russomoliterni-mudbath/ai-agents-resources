@@ -10,12 +10,13 @@ Collection of reusable Claude Code skills for software development workflows. Ea
 
 ```
 skills/
-├── add-memory/          # Capturing project knowledge and best practices
-├── add-unit-tests/      # Adding/updating unit tests for code changes
-├── agent-md-refactor/   # Refactoring bloated agent instruction files
-├── bug-fix/             # Systematic debugging and bug fixing
-├── new-feature/         # Feature development workflow
-└── refactor/            # Safe, incremental refactoring
+├── adding-memory/                      # Capturing project knowledge and best practices
+├── adding-tests/                       # Adding/updating unit tests for code changes
+├── building-features/                  # Feature development workflow
+├── building-skills/                    # Converting workflows to Claude skills
+├── fixing-bugs/                        # Systematic debugging and bug fixing
+├── refactoring-agent-instructions/     # Refactoring bloated agent instruction files
+└── refactoring-code/                   # Safe, incremental refactoring
 ```
 
 ## Working with Skills

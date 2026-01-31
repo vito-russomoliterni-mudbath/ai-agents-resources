@@ -1,5 +1,5 @@
 ---
-name: add-memory
+name: adding-memory
 description: This skill should be used when the user asks to "remember this", "add this guideline", "document this pattern", "save this best practice", or "make a note of this". It captures project knowledge and best practices in appropriate documentation files.
 version: 1.0.0
 disable-model-invocation: true
@@ -7,7 +7,7 @@ user-invocable: true
 argument-hint: "[guideline or best practice]"
 ---
 
-# Add Memory Skill
+# Adding Memory Skill
 
 ## Overview
 

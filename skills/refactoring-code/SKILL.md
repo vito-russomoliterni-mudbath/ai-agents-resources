@@ -1,10 +1,10 @@
 ---
-name: refactor
+name: refactoring-code
 description: This skill should be used when the user asks to "refactor this code", "clean up this code", "improve code structure", "reduce duplication", or "make this more maintainable". It guides safe, incremental refactoring while preserving behavior.
 version: 1.0.0
 ---
 
-# Refactor Skill
+# Refactoring Code Skill
 
 ## Overview
 
