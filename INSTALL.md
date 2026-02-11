@@ -22,23 +22,23 @@ cd ai-agents-resources
 
 The `install-skills.ps1` script provides:
 
-### ✓ Smart Updates
+### Smart Updates
 - Detects existing skills in `~/.claude/skills/`
 - Shows exactly which files will be added, updated, or deleted
 - Cleans up old files before installing new versions (prevents orphaned files)
 
-### ✓ Interactive or Automatic
+### Interactive or Automatic
 - **Interactive mode** (default): Prompts for confirmation before each skill
 - **Automatic mode** (`-y` flag): Installs/updates all skills without prompts
 
-### ✓ Clear Feedback
-Shows color-coded status for each file:
+### Clear Feedback
+Shows colour-coded status for each file:
 - `+` Green = New file to be added
 - `~` Yellow = Existing file to be updated
 - `-` Red = Old file to be deleted
 
-### ✓ Safe and Reversible
-- Creates backups by removing old versions before copying new ones
+### Safe and Reversible
+- Removes old versions before copying new ones
 - Shows summary at the end (installed, updated, skipped)
 - Returns proper exit codes for scripting
 
@@ -56,15 +56,12 @@ Shows color-coded status for each file:
 
 Prompts before each skill:
 ```
-Skill: bug-fix
+Skill: reviewing-pr-links
   Status: New installation
   Files to install:
     + SKILL.md
-    + assets\bug-fix-checklist.md
-    + references\debugging-strategies.md
-    ...
 
-  Install/update this skill? [y/N]:
+  Install this skill for Claude Code? [Y/n]
 ```
 
 ### Automatic Installation
@@ -79,26 +76,21 @@ Installs/updates all skills without prompting.
 .\install-skills.ps1 -DryRun
 ```
 
-Shows what would be installed/updated without making any changes to the filesystem. Perfect for:
-- Previewing changes before installation
-- Checking which skills need updates
-- Verifying the script behavior
+Shows what would be installed/updated without making any changes to the filesystem.
 
 Example output:
 ```
-════════════════════════════════════════════════════════
-                    DRY RUN MODE
-  No changes will be made to the filesystem
-════════════════════════════════════════════════════════
+======================== DRY RUN MODE ========================
+No changes will be made to the filesystem
+=============================================================
 
-Skill: bug-fix
-  Status: New installation
-  Files to install:
-    + SKILL.md
-    + assets\bug-fix-checklist.md
-    ...
-[DRY RUN] Would copy from: ...\skills\bug-fix
-[DRY RUN] Would copy to: ...\skills\bug-fix
+Skill: fixing-bugs
+  Status: Update available
+  Files to update:
+    ~ SKILL.md
+    ~ references\debugging-strategies.md
+[DRY RUN] Would copy from: ...\skills\fixing-bugs
+[DRY RUN] Would copy to: ...\.claude\skills\fixing-bugs
   [DRY RUN] Would install successfully
 ```
 
@@ -115,8 +107,8 @@ Shows detailed output including:
 
 Example output:
 ```
-[VERBOSE] Source: C:\repos\ai-agents-resources\skills\bug-fix
-[VERBOSE] Destination: C:\Users\you\.claude\skills\bug-fix
+[VERBOSE] Source: C:\repos\ai-agents-resources\skills\fixing-bugs
+[VERBOSE] Destination: C:\Users\you\.claude\skills\fixing-bugs
 [VERBOSE] Old version has 10 files
 [VERBOSE] New version has 11 files
   Files to update:
@@ -125,7 +117,7 @@ Example output:
 ```
 
 ### Combined Flags
-You can combine flags for different behaviors:
+You can combine flags for different behaviours:
 
 ```powershell
 # Verbose dry-run (see details without making changes)
@@ -142,7 +134,7 @@ You can combine flags for different behaviors:
 
 The script automatically detects your Claude home directory:
 
-- **Custom location:** `$env:CLAUDE_HOME/skills/` (if `CLAUDE_HOME` environment variable is set)
+- **Custom location:** `$env:CLAUDE_HOME/skills/` (if `CLAUDE_HOME` is set)
 - **Windows default:** `%USERPROFILE%\.claude\skills\`
 - **Linux/macOS default:** `~/.claude/skills/`
 
@@ -150,18 +142,18 @@ The script automatically detects your Claude home directory:
 
 Each skill is copied to `~/.claude/skills/{skill-name}/` with the following structure:
 
-```
+```text
 ~/.claude/skills/
-├── add-memory/
-│   ├── SKILL.md
-│   ├── assets/
-│   ├── references/
-│   └── ...
-├── add-unit-tests/
-├── agent-md-refactor/
-├── bug-fix/
-├── new-feature/
-└── refactor/
+|-- adding-memory/
+|-- adding-tests/
+|-- building-features/
+|-- building-skills/
+|-- creating-automation-scripts/
+|-- creating-subagents/
+|-- fixing-bugs/
+|-- refactoring-agent-instructions/
+|-- refactoring-code/
+`-- reviewing-pr-links/
 ```
 
 ## Updating Skills
@@ -212,15 +204,15 @@ After installation:
 
 If you prefer to install skills manually:
 
-1. Create the skills directory (if it doesn't exist):
+1. Create the skills directory (if it does not exist):
    ```powershell
    mkdir ~\.claude\skills
    ```
 
 2. Copy individual skill directories:
    ```powershell
-   cp -r skills\bug-fix ~\.claude\skills\
-   cp -r skills\new-feature ~\.claude\skills\
+   cp -r skills\fixing-bugs ~\.claude\skills\
+   cp -r skills\reviewing-pr-links ~\.claude\skills\
    # etc.
    ```
 

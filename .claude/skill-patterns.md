@@ -35,7 +35,7 @@ Skills emphasize:
 - **Parallel tool calls** - Run independent tools simultaneously
 - **Task tracking** - Use TaskCreate/Update for complex workflows
 - **Test-driven** - Run tests after every change
-- **Incremental commits** - Commit after each successful step (refactor skill)
+- **Incremental commits** - Commit after each successful step (`refactoring-code` skill)
 
 ## Anti-Patterns to Avoid
 

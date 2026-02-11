@@ -12,6 +12,9 @@
 .PARAMETER y
     Skip confirmation prompts and install/update all skills automatically.
 
+.PARAMETER a
+    Install/update all skills and skip the skill selection prompt.
+
 .PARAMETER SkipAgentPrompt
     Skip the agent selection prompt and install to both Claude Code and Codex.
 
@@ -33,6 +36,10 @@
     Install all skills without confirmation prompts.
 
 .EXAMPLE
+    .\install-skills.ps1 -a
+    Install/update all skills (still asks per-skill confirmation unless -y is used).
+
+.EXAMPLE
     .\install-skills.ps1 -SkipAgentPrompt
     Install skills to both Claude Code and Codex without asking which agent to target.
 
@@ -51,6 +58,7 @@
 
 param(
     [switch]$y,
+    [switch]$a,
     [switch]$v,
     [switch]$DryRun,
     [switch]$SkipAgentPrompt,
@@ -65,6 +73,7 @@ if ($RemainingArgs.Count -gt 0) {
     Write-Host "Use -help for usage information" -ForegroundColor Yellow
     Write-Host "`nValid options:" -ForegroundColor Cyan
     Write-Host "  -y          Skip confirmation prompts" -ForegroundColor Gray
+    Write-Host "  -a          Install/update all skills (skip selection prompt)" -ForegroundColor Gray
     Write-Host "  -v          Show detailed output" -ForegroundColor Gray
     Write-Host "  -DryRun     Show what would be done without making changes" -ForegroundColor Gray
     Write-Host "  -SkipAgentPrompt  Skip agent selection (defaults to both)" -ForegroundColor Gray
@@ -80,10 +89,10 @@ if ($help) {
 
 # Show dry-run notice
 if ($DryRun) {
-    Write-Host "════════════════════════════════════════════════════════" -ForegroundColor Magenta
+    Write-Host "--------------------------------------------------------" -ForegroundColor Magenta
     Write-Host "                    DRY RUN MODE                        " -ForegroundColor Magenta
     Write-Host "  No changes will be made to the filesystem             " -ForegroundColor Magenta
-    Write-Host "════════════════════════════════════════════════════════" -ForegroundColor Magenta
+    Write-Host "--------------------------------------------------------" -ForegroundColor Magenta
     Write-Host ""
 }
 
@@ -178,6 +187,52 @@ if ($skills.Count -eq 0) {
 
 Write-Info "`nFound $($skills.Count) skill(s) to install/update`n"
 
+# Prompt for skill selection unless -y is specified
+$skillsToInstall = $skills | Sort-Object Name
+if (-not $y.IsPresent -and -not $a.IsPresent) {
+    Write-Host "Select skills to install/update (space-separated numbers). Press Enter for all:" -ForegroundColor Cyan
+    for ($i = 0; $i -lt $skillsToInstall.Count; $i++) {
+        $index = $i + 1
+        Write-Host "  [$index] $($skillsToInstall[$i].Name)" -ForegroundColor Gray
+    }
+
+    $selectionValid = $false
+    while (-not $selectionValid) {
+        $skillChoice = Read-Host "Choose skills [default: all]"
+        $normalizedChoice = $skillChoice.Trim()
+
+        if (-not $normalizedChoice) {
+            $selectionValid = $true
+            break
+        }
+
+        $tokens = $normalizedChoice -split '\s+'
+        $selectedIndexes = @()
+        foreach ($token in $tokens) {
+            if ($token -match '^\d+$') {
+                $num = [int]$token
+                if ($num -ge 1 -and $num -le $skillsToInstall.Count) {
+                    $selectedIndexes += $num
+                } else {
+                    Write-Warning-Custom "Ignoring out-of-range selection: $token"
+                }
+            } else {
+                Write-Warning-Custom "Ignoring invalid selection: $token"
+            }
+        }
+
+        $selectedIndexes = $selectedIndexes | Select-Object -Unique
+        if ($selectedIndexes.Count -gt 0) {
+            $skillsToInstall = $selectedIndexes | ForEach-Object { $skillsToInstall[$_ - 1] }
+            $selectionValid = $true
+        } else {
+            Write-Warning-Custom "No valid selections provided. Please choose at least one skill."
+        }
+    }
+} else {
+    Write-Verbose-Custom "Skipping skill selection; defaulting to all skills"
+}
+
 function Install-SkillsForAgent {
     param(
         [string]$AgentDisplayName,
@@ -198,7 +253,7 @@ function Install-SkillsForAgent {
         $sourcePath = $skill.FullName
         $destPath = Join-Path $SkillsDestDir $skillName
 
-        Write-Host "──────────────────────────────────────────────────" -ForegroundColor DarkGray
+        Write-Host "--------------------------------------------------" -ForegroundColor DarkGray
         Write-Host "Agent: $AgentDisplayName" -ForegroundColor DarkGray
         Write-Host "Skill: " -NoNewline
         Write-Host $skillName -ForegroundColor Magenta
@@ -377,7 +432,7 @@ function Install-SkillsForAgent {
     }
 
     # Summary
-    Write-Host "══════════════════════════════════════════════════" -ForegroundColor DarkGray
+    Write-Host "--------------------------------------------------" -ForegroundColor DarkGray
     if ($DryRun) {
         Write-Host "Summary (DRY RUN) - ${AgentDisplayName}:" -ForegroundColor Magenta
         Write-Host "  Would install: $installed" -ForegroundColor Green
@@ -389,7 +444,7 @@ function Install-SkillsForAgent {
         Write-Host "  Updated:   $updated" -ForegroundColor Yellow
         Write-Host "  Skipped:   $skipped" -ForegroundColor Gray
     }
-    Write-Host "══════════════════════════════════════════════════" -ForegroundColor DarkGray
+    Write-Host "--------------------------------------------------" -ForegroundColor DarkGray
 
     if ($installed -gt 0 -or $updated -gt 0) {
         Write-Host ""
@@ -433,7 +488,7 @@ foreach ($agentKey in $selectedAgentKeys) {
         Write-Verbose-Custom "$($agent.DisplayName) skills directory already exists: $skillsDestDir"
     }
 
-    Install-SkillsForAgent -AgentDisplayName $agent.DisplayName -SkillsDestDir $skillsDestDir -Skills $skills | Out-Null
+    Install-SkillsForAgent -AgentDisplayName $agent.DisplayName -SkillsDestDir $skillsDestDir -Skills $skillsToInstall | Out-Null
 }
 
 exit 0

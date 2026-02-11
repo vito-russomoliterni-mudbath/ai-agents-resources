@@ -20,11 +20,11 @@ Skills use YAML frontmatter to define:
 
 ## Workflow Structure
 
-Skills organize work into phases:
-1. **Discovery/Planning** - Understand scope, gather context
+Skills organise work into phases:
+1. **Discovery/Planning** - Understand scope and gather context
 2. **Baseline/Analysis** - Establish current state
 3. **Implementation** - Execute the work
-4. **Validation** - Verify correctness, run tests
+4. **Validation** - Verify correctness and run tests
 5. **Iteration** - Fix issues until complete
 
 ## Tool Usage Per Phase
@@ -32,18 +32,19 @@ Skills organize work into phases:
 Each phase uses specific Claude Code tools:
 - **Read/Grep/Glob** - Code exploration
 - **Edit/Write** - Code changes
-- **Bash** - Run tests, git commands, builds
+- **Bash** - Run tests, git commands, and builds
 - **TaskCreate/TaskUpdate/TaskList** - Track progress
 - **AskUserQuestion** - Clarify requirements
 
 ## Skill Invocation Patterns
 
 Skills handle different scopes:
-- **Diff-based** - Compare against base branch (add-unit-tests, bug-fix)
-- **Feature-focused** - Target specific area (new-feature)
-- **Whole-codebase** - Scan entire project (refactor)
-- **Interactive** - Ask user for scope (add-memory, agent-md-refactor)
+- **Diff-based** - Compare against base branch (`adding-tests`, `reviewing-pr-links`)
+- **Feature-focused** - Target a specific outcome (`building-features`, `creating-automation-scripts`)
+- **Whole-codebase** - Scan and improve broad areas (`refactoring-code`)
+- **Interactive** - Ask the user for scope and choices (`adding-memory`, `creating-subagents`, `refactoring-agent-instructions`)
+- **Transformation-focused** - Convert one instruction format into another (`building-skills`)
 
 ## Progressive Disclosure Principle
 
-Reference files in `references/` provide deep knowledge loaded only when needed to save context tokens. This same principle applies to this CLAUDE.md structure.
+Reference files in `references/` provide deep knowledge loaded only when needed to save context tokens. This same principle applies to the linked `.claude` documentation structure.

@@ -68,6 +68,18 @@ Create or update Agent Skills-compliant skills from workflows, prompts, or exist
 
 ---
 
+### ⚙️ [creating-automation-scripts](skills/creating-automation-scripts/)
+Create automation scripts with environment-aware patterns and robust command handling.
+
+**Use when:**
+- Writing PowerShell, bash, or cross-platform automation
+- Automating repetitive developer tasks
+- Building setup or operational scripts
+
+**Workflow:** Detect environment → Clarify requirements → Design script → Implement → Validate safety and idempotency
+
+---
+
 ### 🤖 [creating-subagents](skills/creating-subagents/)
 Create effective Claude Code sub-agents through guided task analysis and configuration design.
 
@@ -124,6 +136,19 @@ Safe, incremental refactoring while preserving behavior through continuous testi
 **Workflow:** Baseline → Detect smells → Plan → Refactor → Test → Commit → Repeat
 
 **Key principle:** Small steps, tests after each change, commit when green
+
+---
+
+### 🔎 [reviewing-pr-links](skills/reviewing-pr-links/)
+Review a GitHub pull request from a URL by validating ticket scope, code changes, checks, and all review threads.
+
+**Use when:**
+- Auditing whether a PR truly matches its ticket
+- Verifying whether resolved comments were genuinely addressed
+- Performing high-rigour PR quality reviews
+
+**Workflow:** Parse PR URL → Load PR data → Build scope checklist → Inspect diff → Audit comments/threads → Report findings-first
+
 ## Installation
 
 ### Option 1: Automated Installation (Recommended)
@@ -189,8 +214,10 @@ Skills can be invoked using the `/skill-name` syntax in Claude Code:
 ```
 /fixing-bugs "Login form throws error when password is empty"
 /building-features "Add dark mode toggle to header"
+/creating-automation-scripts "Create a script to rotate logs older than 14 days"
 /adding-tests
 /refactoring-code
+/reviewing-pr-links "https://github.com/owner/repo/pull/123"
 /adding-memory "Always use async/await for database operations"
 /refactoring-agent-instructions
 ```
@@ -283,7 +310,7 @@ Contributions are welcome! When adding or modifying skills:
 ## Documentation
 
 - [CLAUDE.md](CLAUDE.md) - Detailed guidance for Claude Code working in this repository
-- Individual skill READMEs in each `skills/` directory
+- Individual `SKILL.md` files in each `skills/` directory
 - Reference documentation within each skill's `references/` directory
 
 ## License
@@ -297,4 +324,4 @@ Created for use with [Claude Code](https://claude.ai/code) by Anthropic.
 ---
 
 **Version:** 1.0.0
-**Last Updated:** 2026-01-31
+**Last Updated:** 2026-02-11

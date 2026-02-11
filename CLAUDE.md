@@ -8,16 +8,18 @@ Collection of reusable Claude Code skills for software development workflows. Ea
 
 ## Repository Structure
 
-```
+```text
 skills/
-├── adding-memory/                      # Capturing project knowledge and best practices
-├── adding-tests/                       # Adding/updating unit tests for code changes
-├── building-features/                  # Feature development workflow
-├── building-skills/                    # Converting workflows to Claude skills
-├── creating-subagents/                 # Creating Claude Code sub-agents
-├── fixing-bugs/                        # Systematic debugging and bug fixing
-├── refactoring-agent-instructions/     # Refactoring bloated agent instruction files
-└── refactoring-code/                   # Safe, incremental refactoring
+|-- adding-memory/                   # Capturing project knowledge and best practices
+|-- adding-tests/                    # Adding/updating unit tests for code changes
+|-- building-features/               # Feature development workflow
+|-- building-skills/                 # Converting workflows to Claude skills
+|-- creating-automation-scripts/     # Building automation scripts across environments
+|-- creating-subagents/              # Creating Claude Code sub-agents
+|-- fixing-bugs/                     # Systematic debugging and bug fixing
+|-- refactoring-agent-instructions/  # Refactoring bloated agent instruction files
+|-- refactoring-code/                # Safe, incremental refactoring
+`-- reviewing-pr-links/              # Auditing PR scope, checks, and comment resolution
 ```
 
 ## Working with Skills
@@ -48,7 +50,7 @@ Install/update skills to local Claude home (`~\.claude\skills\`):
 
 # Combined flags
 .\install-skills.ps1 -v -y          # Verbose automatic
-.\install-skills.ps1 -v -DryRun    # Verbose preview
+.\install-skills.ps1 -v -DryRun     # Verbose preview
 ```
 
 See [INSTALL.md](INSTALL.md) for detailed installation documentation.
@@ -58,7 +60,7 @@ See [INSTALL.md](INSTALL.md) for detailed installation documentation.
 ### Creating/Modifying Skills
 - Follow the standard structure: `SKILL.md`, `assets/`, `references/`, `scripts/`
 - Use YAML frontmatter in `SKILL.md`
-- Keep workflows phase-based (Discovery → Implementation → Validation)
+- Keep workflows phase-based (Discovery -> Implementation -> Validation)
 - Move detailed guidance to `references/` files
 - Provide templates in `assets/` when helpful
 

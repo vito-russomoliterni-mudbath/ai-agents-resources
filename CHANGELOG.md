@@ -1,5 +1,13 @@
 # Changelog
 
+## [Unreleased]
+
+### Added
+- **New skill: reviewing-pr-links** - Reviews GitHub pull requests from a URL by validating ticket scope, changed code, status checks, and comment/review-thread resolution integrity.
+
+### Changed
+- Updated repository documentation (`README.md`, `CLAUDE.md`, `.claude/skill-reference.md`, `.claude/skill-architecture.md`, `INSTALL.md`) to reflect the current skill set and naming.
+
 ## [2.0.0] - 2026-01-31
 
 ### Major Update: Agent Skills Open Standard
