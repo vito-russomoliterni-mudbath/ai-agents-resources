@@ -1,6 +1,6 @@
 ﻿# AI Agents Resources
 
-A collection of reusable Claude Code skills for software development workflows. These skills guide Claude through common development tasks with structured, phase-based workflows that ensure quality and completeness.
+A collection of reusable AI Agent skills for software development workflows. These skills guide agents like Claude Code, Codex, and Gemini through common development tasks with structured, phase-based workflows that ensure quality and completeness.
 
 ## What are Skills?
 
@@ -155,55 +155,61 @@ Review a GitHub pull request from a URL by validating ticket scope, code changes
 
 Clone the repository and run the installation script:
 
+**Linux / macOS (Bash):**
 ```bash
 git clone https://github.com/vito-russomoliterni-mudbath/ai-agents-resources.git
 cd ai-agents-resources
+./install-skills.sh
 ```
 
 **Windows (PowerShell):**
 ```powershell
+git clone https://github.com/vito-russomoliterni-mudbath/ai-agents-resources.git
+cd ai-agents-resources
 .\install-skills.ps1
 ```
 
 **Interactive mode** (default) - Prompts for confirmation before installing/updating each skill:
-```powershell
-.\install-skills.ps1
+```bash
+./install-skills.sh
 ```
 
 **Automatic mode** - Installs/updates all skills without prompts:
-```powershell
-.\install-skills.ps1 -y
+```bash
+./install-skills.sh -y
+```
+
+**Skip Agent Prompt** - Installs/updates all skills to all agents without asking:
+```bash
+./install-skills.sh --skip-agent-prompt
 ```
 
 **Dry-run mode** - Shows what would be installed/updated without making changes:
-```powershell
-.\install-skills.ps1 -DryRun
+```bash
+./install-skills.sh --dry-run
 ```
 
 **Verbose mode** - Shows detailed output (file sizes, paths, progress):
-```powershell
-.\install-skills.ps1 -v
-```
-
-**Combined flags** - Use multiple flags together:
-```powershell
-.\install-skills.ps1 -v -y          # Verbose automatic installation
-.\install-skills.ps1 -v -DryRun    # Verbose dry-run
+```bash
+./install-skills.sh -v
 ```
 
 **Help:**
-```powershell
-.\install-skills.ps1 -help
+```bash
+./install-skills.sh --help
 ```
 
+*(Note: The same flags apply to `install-skills.ps1` for Windows users, e.g., `.\install-skills.ps1 -y`, `.\install-skills.ps1 -DryRun`)*
+
 The script will:
-- Install skills to `~/.claude/skills/` (or `$CLAUDE_HOME/skills/`)
+- Let you choose which agents to install skills for (Claude Code, Codex, Gemini Antigravity, Gemini CLI, or All)
+- Install skills to respective directories (e.g., `~/.claude/skills/`, `~/.gemini/skills/`, etc.)
 - Show which files will be added, updated, or deleted before making changes
 - Ask for confirmation before each skill (unless using `-y` flag)
 - Clean up old versions before installing new ones (prevents orphaned files)
 
 ### Option 2: Manual Installation
-Copy any skill directory from `skills/` into your `~/.claude/skills/` directory.
+Copy any skill directory from `skills/` into your agent's skills directory (e.g., `~/.claude/skills/` or `~/.gemini/skills/`).
 
 ## Usage
 

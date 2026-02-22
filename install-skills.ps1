@@ -4,10 +4,10 @@
     Install or update Claude Code and Codex skills to local agent home directories.
 
 .DESCRIPTION
-    This script copies skills from this repository to your local Claude Code and/or Codex home directories
-    (~/.claude/skills/ and ~/.codex/skills/). It will prompt for confirmation before installing or updating
-    each skill, showing which files will be affected. Use the -y flag to skip confirmations and install/update
-    all skills automatically.
+    This script copies skills from this repository to your local Claude Code, Codex, and/or Gemini
+    home directories (~/.claude/skills/, ~/.codex/skills/, ~/.gemini/antigravity/global_skills/). 
+    It will prompt for confirmation before installing or updating each skill, showing which files 
+    will be affected. Use the -y flag to skip confirmations and install/update all skills automatically.
 
 .PARAMETER y
     Skip confirmation prompts and install/update all skills automatically.
@@ -16,7 +16,7 @@
     Install/update all skills and skip the skill selection prompt.
 
 .PARAMETER SkipAgentPrompt
-    Skip the agent selection prompt and install to both Claude Code and Codex.
+    Skip the agent selection prompt and install to all agents.
 
 .PARAMETER v
     Show detailed output including full paths, file sizes, and progress messages.
@@ -41,7 +41,7 @@
 
 .EXAMPLE
     .\install-skills.ps1 -SkipAgentPrompt
-    Install skills to both Claude Code and Codex without asking which agent to target.
+    Install skills to all agents without asking which agent to target.
 
 .EXAMPLE
     .\install-skills.ps1 -DryRun
@@ -76,7 +76,7 @@ if ($RemainingArgs.Count -gt 0) {
     Write-Host "  -a          Install/update all skills (skip selection prompt)" -ForegroundColor Gray
     Write-Host "  -v          Show detailed output" -ForegroundColor Gray
     Write-Host "  -DryRun     Show what would be done without making changes" -ForegroundColor Gray
-    Write-Host "  -SkipAgentPrompt  Skip agent selection (defaults to both)" -ForegroundColor Gray
+    Write-Host "  -SkipAgentPrompt  Skip agent selection (defaults to all)" -ForegroundColor Gray
     Write-Host "  -help       Show help message" -ForegroundColor Gray
     exit 1
 }
@@ -138,31 +138,35 @@ function Resolve-AgentHome {
 }
 
 $agents = @(
-    [pscustomobject]@{ Key = "claude"; DisplayName = "Claude Code"; EnvVar = "CLAUDE_HOME"; DefaultFolder = ".claude" },
-    [pscustomobject]@{ Key = "codex"; DisplayName = "Codex"; EnvVar = "CODEX_HOME"; DefaultFolder = ".codex" }
+    [pscustomobject]@{ Key = "claude"; DisplayName = "Claude Code"; EnvVar = "CLAUDE_HOME"; DefaultFolder = ".claude"; SkillsFolder = "skills" },
+    [pscustomobject]@{ Key = "codex"; DisplayName = "Codex"; EnvVar = "CODEX_HOME"; DefaultFolder = ".codex"; SkillsFolder = "skills" },
+    [pscustomobject]@{ Key = "gemini"; DisplayName = "Gemini (Antigravity)"; EnvVar = "GEMINI_HOME"; DefaultFolder = ".gemini"; SkillsFolder = "antigravity/global_skills" },
+    [pscustomobject]@{ Key = "gemini_cli"; DisplayName = "Gemini CLI"; EnvVar = "GEMINI_HOME"; DefaultFolder = ".gemini"; SkillsFolder = "skills" }
 )
 
-$selectedAgentKeys = @("claude", "codex")
+$selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli")
 if (-not $SkipAgentPrompt) {
     Write-Host ""
     Write-Host "Select which agent to install skills for:" -ForegroundColor Cyan
     Write-Host "  [1] Claude Code" -ForegroundColor Gray
     Write-Host "  [2] Codex" -ForegroundColor Gray
-    Write-Host "  [3] Both (default)" -ForegroundColor Gray
-    $agentChoice = Read-Host "Choose an option [1/2/3]"
+    Write-Host "  [3] Gemini (CLI + Antigravity)" -ForegroundColor Gray
+    Write-Host "  [4] All (default)" -ForegroundColor Gray
+    $agentChoice = Read-Host "Choose an option [1/2/3/4]"
 
     $normalizedChoice = ($agentChoice | ForEach-Object { $_.Trim().ToLower() })
     switch -regex ($normalizedChoice) {
         "^(1|c|claude)$" { $selectedAgentKeys = @("claude") }
         "^(2|x|codex)$" { $selectedAgentKeys = @("codex") }
-        "^(3|b|both|)$" { $selectedAgentKeys = @("claude", "codex") }
+        "^(3|g|gemini)$" { $selectedAgentKeys = @("gemini", "gemini_cli") }
+        "^(4|a|both|all|)$" { $selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli") }
         default {
-            Write-Warning-Custom "Unrecognized selection '$agentChoice'. Defaulting to both agents."
-            $selectedAgentKeys = @("claude", "codex")
+            Write-Warning-Custom "Unrecognized selection '$agentChoice'. Defaulting to all agents."
+            $selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli")
         }
     }
 } else {
-    Write-Verbose-Custom "Skipping agent prompt; defaulting to both agents"
+    Write-Verbose-Custom "Skipping agent prompt; defaulting to all agents"
 }
 
 # Get source skills directory
@@ -475,7 +479,7 @@ foreach ($agentKey in $selectedAgentKeys) {
     Write-Info "$($agent.DisplayName) home directory: $agentHome"
 
     # Create skills directory if it doesn't exist
-    $skillsDestDir = Join-Path $agentHome "skills"
+    $skillsDestDir = Join-Path $agentHome $agent.SkillsFolder
     if (-not (Test-Path $skillsDestDir)) {
         if ($DryRun) {
             Write-DryRun "Would create $($agent.DisplayName) skills directory: $skillsDestDir"
