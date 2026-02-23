@@ -2,6 +2,20 @@
 
 A collection of reusable AI Agent skills for software development workflows. These skills guide agents like Claude Code, Codex, and Gemini through common development tasks with structured, phase-based workflows that ensure quality and completeness.
 
+## 🧭 Navigation
+
+- [What are Skills?](#what-are-skills)
+- [Available Skills](#available-skills)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Skill Structure](#skill-structure)
+- [Common Patterns](#common-patterns)
+- [Philosophy](#philosophy)
+- [Anti-Patterns Avoided](#anti-patterns-avoided)
+- [Contributing](#contributing)
+- [Documentation](#documentation)
+- [License](#license)
+
 ## What are Skills?
 
 Skills are structured workflows that guide AI coding assistants through complex tasks. Each skill:
