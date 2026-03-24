@@ -14,6 +14,7 @@ skills/
 |-- adding-tests/                    # Adding/updating unit tests for code changes
 |-- building-features/               # Feature development workflow
 |-- building-skills/                 # Converting workflows to Claude skills
+|-- cleaning-git-branches/           # Managing local git branches
 |-- creating-automation-scripts/     # Building automation scripts across environments
 |-- creating-subagents/              # Creating Claude Code sub-agents
 |-- fixing-bugs/                     # Systematic debugging and bug fixing

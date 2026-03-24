@@ -70,6 +70,18 @@ Implement new features using a structured approach with planning, implementation
 
 ---
 
+### 🧹 [cleaning-git-branches](skills/cleaning-git-branches/)
+Finds and helps clean up local git branches that have no remote or have been untouched for 30+ days.
+
+**Use when:**
+- Cleaning up the local workspace
+- Removing merged or abandoned branches
+- Managing a large number of stale local branches
+
+**Workflow:** Identify "gone" branches → Identify stale branches (>30 days) → Present report → Ask for confirmation → Perform deletion
+
+---
+
 ### 🧰 [building-skills](skills/building-skills/)
 Create or update Agent Skills-compliant skills from workflows, prompts, or existing instructions.
 

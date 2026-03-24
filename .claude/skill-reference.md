@@ -33,6 +33,14 @@ Quick reference for each skill's unique characteristics and workflows.
 
 **Principle:** Avoid over-engineering, keep solutions minimal
 
+## cleaning-git-branches
+
+**Purpose:** Find and help clean up local git branches that have no remote or have been untouched for 30+ days.
+
+**Key Feature:** Identifies "gone" branches (whose remote was deleted) and stale branches based on committer date.
+
+**Workflow:** Identify "gone" branches -> Identify stale branches (>30 days) -> Present report -> Ask for user confirmation -> Perform deletion
+
 ## building-skills
 
 **Purpose:** Convert AI assistant workflows into Agent Skills open standard compatible skills.
