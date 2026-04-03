@@ -1,6 +1,6 @@
 ---
 name: building-skills
-description: Builds a properly formatted skills following the Agent Skills open standard specification. Use when asked to "create a skill", "convert a workflow to a skill", "transform a prompt into a skill", or "update a skill to best practices".
+description: Builds a properly formatted skills following the Agent Skills open standard specification. Use when asked to "create a skill", "convert a workflow to a skill", "transform a prompt into a skill", "update a skill to best practices", "improve a skill", "review a skill", or "refactor a skill".
 ---
 
 # Building Skills
@@ -22,11 +22,8 @@ Ask the user to provide the workflow via:
 Identify the workflow characteristics:
 - **Task purpose**: What problem does this solve?
 - **Key steps**: What are the main actions?
-- **Source tool**: Which AI assistant is this from? (Claude Code, Cursor, Windsurf, Aider, etc.)
 - **Tool usage**: Does it use specific tools, commands, or APIs?
 - **Dependencies**: Are there environmental requirements?
-
-Research tool-specific best practices if needed.
 
 ### 3. Design Structure
 Plan the skill layout following Agent Skills specification:
@@ -210,141 +207,26 @@ skills-ref validate ./your-skill-folder
 - ✅ File paths use forward slashes
 - ✅ Main SKILL.md is under 500 lines
 
-### 9. Test the Skill
+### 9. Test & Publish (Optional)
 Before finalizing:
-- Load the skill in an agent that supports Agent Skills
 - Test the workflow end-to-end
 - Verify referenced files are loaded correctly
 - Check that the description triggers the skill appropriately
 - Validate any scripts execute as expected
 
-### 10. Document and Share
-Add usage information:
-- How to install the skill
-- Example invocations
-- Links to the Agent Skills specification
-- License and attribution
+*Note: If publishing publicly, load the skill in an agent that supports Agent Skills, add usage information, and link to the specification.*
 
-## Agent Skills Specification Reference
+## Best Practices & Patterns
 
-### Required Frontmatter Fields
+| Do | Don't |
+|---|---|
+| Use mandatory gates ("Do NOT proceed until X") for critical prerequisites | Make every step optional with "if needed" |
+| Point to existing local docs with relative paths | Duplicate content that already exists elsewhere |
+| Query live state at runtime | Embed stale state (entity IDs, versions, IPs) |
+| Put workflow logic in SKILL.md, reference material in references/ | Stuff everything in SKILL.md |
+| Use specific commands as examples | Use vague descriptions like "use the appropriate tool" |
+| Remove argument-hint — not part of spec | Add non-spec frontmatter fields |
 
-**`name`** (required)
-- Type: String
-- Format: Lowercase kebab-case
-- Rules:
-  - Cannot start with hyphen
-  - No consecutive hyphens
-  - No uppercase letters
-- Examples: `pdf-processing`, `data-analysis`, `code-review`
-
-**`description`** (required)
-- Type: String
-- Length: 1-1024 characters
-- Purpose: Clear explanation with keywords
-- Style: Third person, present tense
-- Should include: What it does + When to use it
-
-### Optional Frontmatter Fields
-
-**`license`** (optional)
-- Type: String
-- Purpose: Specify licensing terms
-- Examples: `MIT`, `Apache-2.0`, `See LICENSE.txt`
-
-**`compatibility`** (optional)
-- Type: String
-- Length: 1-500 characters
-- Purpose: Environmental requirements
-- When to use: Only if skill has specific requirements
-- Example: `Requires Docker and network access for container operations`
-
-**`metadata`** (optional)
-- Type: Object (key-value pairs)
-- Purpose: Custom properties not in spec
-- Common uses: author, version, tags, etc.
-- Example:
-  ```yaml
-  metadata:
-    author: example-org
-    version: "1.0"
-    category: data-processing
-  ```
-
-### Progressive Disclosure
-
-Skills use a three-tier loading model:
-
-1. **Metadata** (~100 tokens): `name` and `description` loaded at agent startup
-2. **Instructions** (< 5000 tokens): Full `SKILL.md` loaded when skill activated
-3. **Resources** (as needed): Files in `scripts/`, `references/`, `assets/` loaded on demand
-
-**Best practices:**
-- Keep SKILL.md under 500 lines
-- Move detailed material to `references/`
-- Link to resources with relative paths
-- Avoid deep nesting of references
-
-## Common Naming Patterns
-
-### Gerund/Present Participle (Recommended)
-Describes ongoing actions, commonly used in the ecosystem:
-
-| Pattern | Example | Use Case |
-|---------|---------|----------|
-| `[action]-ing-[object]` | `processing-data` | Data transformation workflows |
-| `[action]-ing-[object]` | `analyzing-code` | Code review and analysis |
-| `[action]-ing-[object]` | `fixing-bugs` | Debugging and repair |
-| `[action]-ing-[object]` | `building-features` | Feature development |
-| `[action]-ing-[object]` | `testing-code` | Test execution and validation |
-
-### Noun-Object (Valid Alternative)
-Meets specification but less common:
-
-| Pattern | Example | Use Case |
-|---------|---------|----------|
-| `[object]-[action]` | `pdf-processing` | Valid, widely used |
-| `[object]-[tool]` | `data-analyzer` | Valid but less descriptive of action |
-| `[object]-[purpose]` | `code-review` | Valid, commonly seen |
-
-### Invalid Patterns
-Violate Agent Skills specification:
-
-| Pattern | Example | Issue |
-|---------|---------|-------|
-| Uppercase | `PDF-Processing` | Must be lowercase |
-| Starts with hyphen | `-pdf-processing` | Cannot start with hyphen |
-| Consecutive hyphens | `pdf--processing` | No consecutive hyphens |
-| Spaces | `pdf processing` | Must use hyphens |
-
-## Name Suggestion Process
-
-When generating name suggestions, prioritize:
-
-1. **Specification compliance** (required)
-2. **Gerund form** (recommended best practice)
-3. **Clarity** (immediately understandable)
-4. **Brevity** (2-3 words ideal)
-5. **Uniqueness** (distinct from existing skills)
-
-**Example suggestion generation:**
-
-User describes: "A skill for running unit tests automatically"
-
-**Analysis:**
-- Action: running/executing tests
-- Object: tests/code
-- Purpose: automation/validation
-
-**Suggestions:**
-1. `running-tests` (gerund, emphasizes execution)
-2. `testing-code` (gerund, emphasizes validation)
-3. `executing-tests` (gerund, formal tone)
-4. `test-runner` (noun-object, valid but less recommended)
-
-Present with rationale, let user choose.
-
-## Best Practices (Short)
 - Keep instructions concise; assume the model is competent and remove unnecessary explanation.
 - Decide degrees of freedom (high/medium/low) and make it explicit in the workflow.
 - Test with every model you plan to use and revise for inconsistencies.
@@ -358,6 +240,7 @@ Present with rationale, let user choose.
 
 ## References
 
+- [Agent Skills Specification Reference](references/spec-reference.md)
 - Official specification: https://agentskills.io/specification
 - Integration guide: https://agentskills.io/integrate-skills
 - Validation tools: https://github.com/agentskills/agentskills
