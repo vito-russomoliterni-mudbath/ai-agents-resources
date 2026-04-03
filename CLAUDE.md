@@ -18,6 +18,7 @@ skills/
 |-- creating-automation-scripts/     # Building automation scripts across environments
 |-- creating-subagents/              # Creating Claude Code sub-agents
 |-- fixing-bugs/                     # Systematic debugging and bug fixing
+|-- grill-me/                        # Relentless interview-style plan stress-testing
 |-- refactoring-agent-instructions/  # Refactoring bloated agent instruction files
 |-- refactoring-code/                # Safe, incremental refactoring
 `-- reviewing-pr-links/              # Auditing PR scope, checks, and comment resolution

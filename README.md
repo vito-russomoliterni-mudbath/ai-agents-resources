@@ -124,6 +124,18 @@ Create effective Claude Code sub-agents through guided task analysis and configu
 
 ---
 
+### 🔥 [grill-me](skills/grill-me/)
+Interview-style stress-test for plans and designs — relentlessly asks questions until every branch of the decision tree is resolved.
+
+**Use when:**
+- Stress-testing a plan or design before committing
+- User says "grill me" or wants probing questions on their approach
+- Resolving dependencies between decisions iteratively
+
+**Workflow:** Ask one question at a time → provide recommended answer → walk each branch → reach shared understanding
+
+---
+
 ### 🐛 [fixing-bugs](skills/fixing-bugs/)
 Systematically debug and fix software defects through identification, analysis, and validated correction.
 
@@ -244,6 +256,7 @@ Copy any skill directory from `skills/` into your agent's skills directory (e.g.
 Skills can be invoked using the `/skill-name` syntax in Claude Code:
 
 ```
+/grill-me "My plan to migrate the auth service to OAuth2"
 /fixing-bugs "Login form throws error when password is empty"
 /building-features "Add dark mode toggle to header"
 /creating-automation-scripts "Create a script to rotate logs older than 14 days"
