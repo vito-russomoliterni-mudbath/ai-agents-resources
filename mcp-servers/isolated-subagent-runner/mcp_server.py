@@ -5,6 +5,7 @@ import traceback
 import subprocess
 import fnmatch
 import shlex
+import shutil
 from pathlib import Path
 from utils.env_profiler import EnvProfiler
 from utils.git_helper import GitHelper
@@ -259,6 +260,10 @@ class McpServer:
                     "files_to_read": files_to_read
                 }, f, indent=2)
 
+            # Copy the opencode_runner.py script to the worktree's .agent folder so it is available inside the container mount
+            host_runner_path = Path(__file__).parent / "agent" / "opencode_runner.py"
+            shutil.copy2(host_runner_path, task_json_dir / "opencode_runner.py")
+
             # Forward OpenCode credentials and settings from host to container
             runner_env = db_env.copy() if db_env else {}
             for var_name in ["OPENCODE_API_KEY", "OPENCODE_API_URL", "OPENCODE_MODEL"]:
@@ -268,7 +273,7 @@ class McpServer:
             debug_log("Executing subagent runner inside sandbox...")
             runner_code, runner_out, runner_err = docker_helper.exec_in_container(
                 container_name=container_name,
-                cmd=["python3", "/workspace/mcp-servers/isolated-subagent-runner/agent/opencode_runner.py", "/workspace/.agent/task.json"],
+                cmd=["python3", "/workspace/.agent/opencode_runner.py", "/workspace/.agent/task.json"],
                 env=runner_env,
                 timeout=timeout_seconds
             )

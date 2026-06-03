@@ -69,26 +69,28 @@ msg_verbose() { [[ "$VERBOSE" -eq 1 ]] && echo -e "${GRAY}[VERBOSE] $1${NC}"; }
 msg_dryrun() { [[ "$DRY_RUN" -eq 1 ]] && echo -e "${MAGENTA}[DRY RUN] $1${NC}"; }
 
 # Agents configuration
-declare -A AGENT_NAMES=([claude]="Claude Code" [codex]="Codex" [gemini]="Gemini (Antigravity)" [gemini_cli]="Gemini CLI")
-declare -A AGENT_ENV=([claude]="CLAUDE_HOME" [codex]="CODEX_HOME" [gemini]="GEMINI_HOME" [gemini_cli]="GEMINI_HOME")
-declare -A AGENT_DEFAULT_DIR=([claude]=".claude" [codex]=".codex" [gemini]=".gemini" [gemini_cli]=".gemini")
-declare -A AGENT_SKILLS_SUBDIR=([claude]="skills" [codex]="skills" [gemini]="antigravity/global_skills" [gemini_cli]="skills")
+declare -A AGENT_NAMES=([claude]="Claude Code" [codex]="Codex" [gemini]="Gemini (Antigravity)" [gemini_cli]="Gemini CLI" [opencode]="OpenCode")
+declare -A AGENT_ENV=([claude]="CLAUDE_HOME" [codex]="CODEX_HOME" [gemini]="GEMINI_HOME" [gemini_cli]="GEMINI_HOME" [opencode]="OPENCODE_HOME")
+declare -A AGENT_DEFAULT_DIR=([claude]=".claude" [codex]=".codex" [gemini]=".gemini" [gemini_cli]=".gemini" [opencode]=".config/opencode")
+declare -A AGENT_SKILLS_SUBDIR=([claude]="skills" [codex]="skills" [gemini]="antigravity/global_skills" [gemini_cli]="skills" [opencode]="skills")
 
-SELECTED_AGENTS=("claude" "codex" "gemini" "gemini_cli")
+SELECTED_AGENTS=("claude" "codex" "gemini" "gemini_cli" "opencode")
 
 if [[ "$SKIP_AGENT_PROMPT" -eq 0 ]]; then
     echo -e "\n${CYAN}Select which agent to install skills for:${NC}"
     echo -e "${GRAY}  [1] Claude Code${NC}"
     echo -e "${GRAY}  [2] Codex${NC}"
     echo -e "${GRAY}  [3] Gemini (CLI + Antigravity)${NC}"
-    echo -e "${GRAY}  [4] All (default)${NC}"
-    read -p "Choose an option [1/2/3/4]: " agent_choice
+    echo -e "${GRAY}  [4] OpenCode${NC}"
+    echo -e "${GRAY}  [5] All (default)${NC}"
+    read -p "Choose an option [1/2/3/4/5]: " agent_choice
 
     case "${agent_choice,,}" in
         1|c|claude) SELECTED_AGENTS=("claude") ;;
         2|x|codex) SELECTED_AGENTS=("codex") ;;
         3|g|gemini) SELECTED_AGENTS=("gemini" "gemini_cli") ;;
-        4|a|all|"") SELECTED_AGENTS=("claude" "codex" "gemini" "gemini_cli") ;;
+        4|o|opencode) SELECTED_AGENTS=("opencode") ;;
+        5|a|all|"") SELECTED_AGENTS=("claude" "codex" "gemini" "gemini_cli" "opencode") ;;
         *) msg_warning "Unrecognized selection '$agent_choice'. Defaulting to all agents." ;;
     esac
 else

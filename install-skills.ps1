@@ -141,28 +141,31 @@ $agents = @(
     [pscustomobject]@{ Key = "claude"; DisplayName = "Claude Code"; EnvVar = "CLAUDE_HOME"; DefaultFolder = ".claude"; SkillsFolder = "skills" },
     [pscustomobject]@{ Key = "codex"; DisplayName = "Codex"; EnvVar = "CODEX_HOME"; DefaultFolder = ".codex"; SkillsFolder = "skills" },
     [pscustomobject]@{ Key = "gemini"; DisplayName = "Gemini (Antigravity)"; EnvVar = "GEMINI_HOME"; DefaultFolder = ".gemini"; SkillsFolder = "antigravity/global_skills" },
-    [pscustomobject]@{ Key = "gemini_cli"; DisplayName = "Gemini CLI"; EnvVar = "GEMINI_HOME"; DefaultFolder = ".gemini"; SkillsFolder = "skills" }
+    [pscustomobject]@{ Key = "gemini_cli"; DisplayName = "Gemini CLI"; EnvVar = "GEMINI_HOME"; DefaultFolder = ".gemini"; SkillsFolder = "skills" },
+    [pscustomobject]@{ Key = "opencode"; DisplayName = "OpenCode"; EnvVar = "OPENCODE_HOME"; DefaultFolder = ".config/opencode"; SkillsFolder = "skills" }
 )
 
-$selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli")
+$selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli", "opencode")
 if (-not $SkipAgentPrompt) {
     Write-Host ""
     Write-Host "Select which agent to install skills for:" -ForegroundColor Cyan
     Write-Host "  [1] Claude Code" -ForegroundColor Gray
     Write-Host "  [2] Codex" -ForegroundColor Gray
     Write-Host "  [3] Gemini (CLI + Antigravity)" -ForegroundColor Gray
-    Write-Host "  [4] All (default)" -ForegroundColor Gray
-    $agentChoice = Read-Host "Choose an option [1/2/3/4]"
+    Write-Host "  [4] OpenCode" -ForegroundColor Gray
+    Write-Host "  [5] All (default)" -ForegroundColor Gray
+    $agentChoice = Read-Host "Choose an option [1/2/3/4/5]"
 
     $normalizedChoice = ($agentChoice | ForEach-Object { $_.Trim().ToLower() })
     switch -regex ($normalizedChoice) {
         "^(1|c|claude)$" { $selectedAgentKeys = @("claude") }
         "^(2|x|codex)$" { $selectedAgentKeys = @("codex") }
         "^(3|g|gemini)$" { $selectedAgentKeys = @("gemini", "gemini_cli") }
-        "^(4|a|both|all|)$" { $selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli") }
+        "^(4|o|opencode)$" { $selectedAgentKeys = @("opencode") }
+        "^(5|a|both|all|)$" { $selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli", "opencode") }
         default {
             Write-Warning-Custom "Unrecognized selection '$agentChoice'. Defaulting to all agents."
-            $selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli")
+            $selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli", "opencode")
         }
     }
 } else {
