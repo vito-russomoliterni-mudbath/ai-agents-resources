@@ -219,3 +219,10 @@ Once all tests and verification commands pass successfully inside the container:
    ```bash
    git merge sdd/{task_id}
    ```
+
+### 4. Self-Correction for Environment Failures
+If a verification command (such as `tsc`, `jest`, or `rspec`) fails inside the container with a "command not found" or "missing package" error:
+- **Do NOT stop and ask the user.**
+- **Self-Correct**: Immediately add the corresponding package installation command (e.g. `npm install`, `npm install typescript`, or `bundle install`) to the `setup_commands` array.
+- **Retry**: Call `execute_subagent_task` again with the updated setup array.
+

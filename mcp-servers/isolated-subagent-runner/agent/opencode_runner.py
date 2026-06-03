@@ -42,6 +42,16 @@ class OpenCodeRunner:
         full_path.parent.mkdir(parents=True, exist_ok=True)
         full_path.write_text(content, encoding="utf-8")
 
+    def clean_code_block(self, content: str) -> str:
+        content = content.strip()
+        if content.startswith("```"):
+            first_newline = content.find("\n")
+            if first_newline != -1:
+                content = content[first_newline + 1:]
+            if content.endswith("```"):
+                content = content[:-3]
+        return content.strip()
+
     def delete_file(self, relative_path: str):
         full_path = self.workspace / relative_path
         if full_path.exists():
@@ -151,6 +161,7 @@ class OpenCodeRunner:
 
             try:
                 new_content = self.call_llm(user_prompt, SYSTEM_PROMPT)
+                new_content = self.clean_code_block(new_content)
                 self.write_file_content(file_path, new_content)
 
                 logs.append({
