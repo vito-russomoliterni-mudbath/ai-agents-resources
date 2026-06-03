@@ -85,3 +85,12 @@ See [INSTALL.md](INSTALL.md) for detailed installation documentation.
 - [Skill Patterns](.claude/skill-patterns.md) - Common patterns and workflows
 - [Skill Development](.claude/skill-development.md) - Creating/modifying skills
 - [Skill Reference](.claude/skill-reference.md) - Quick reference for each skill
+- [Running Isolated Subagents](skills/running-isolated-subagents/SKILL.md) - Running tasks inside isolated container sandbox
+
+## Tool Redirection & Subagent Rules
+
+When implementing complex feature requests, database updates/migrations, or system tests, agents **must** redirect execution to the isolated subagent runner:
+1. **Tool Redirection Rule**: Prefer calling `execute_subagent_task` instead of modifying local files or running databases directly in the active host workspace.
+2. **Workflow Guidelines**: Validate changes within the ephemeral container sandbox, and stage the verified edits on a branch matching the `sdd/task-id` pattern. Avoid contaminating the dirty developer branch.
+3. **Database Reset**: Trust the container runner to self-heal (wipe and rebuild from scratch) when migrations catch-up fails during container execution.
+
