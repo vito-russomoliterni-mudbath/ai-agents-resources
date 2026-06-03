@@ -69,7 +69,7 @@ Add the following to your global agent configurations (e.g. `~/.claude.json` or 
 Call the `execute_subagent_task` tool with a structured JSON payload defining the task parameters.
 
 #### Schema Fields
-- `task_id`: Unique alphanumeric ID for the task (e.g. `task-01-auth`).
+- `task_id`: Unique, short, lowercase alphanumeric slug (e.g. `issue-19`, `feat-auth`). You MUST auto-generate this slug based on the active ticket, issue, or branch name. Do NOT prompt the user to input or confirm the `task_id`.
 - `summary`: High-level explanation of the code modifications to perform.
 - `files_to_read`: List of workspace-relative paths to read as context.
 - `instructions`: List of file modification objects:
@@ -77,8 +77,9 @@ Call the `execute_subagent_task` tool with a structured JSON payload defining th
   - `action`: `CREATE`, `MODIFY`, or `DELETE`.
   - `description`: Detailed instructions for the LLM editing this specific file.
 - `migration_file_globs`: Glob patterns to match against changed files to detect migration changes (e.g., `["db/migrate/*.rb", "migrations/*.py"]`).
-- `db_setup_commands`: Ephemeral setup/migration commands (e.g., `["bundle exec rails db:migrate"]`).
-- `verification_commands`: Verification commands to run inside the container (e.g., `["bundle exec rspec"]`).
+- `setup_commands`: Environment or package dependency installation commands to run before execution (e.g. `["npm install"]`, `["bundle install"]`, `["pip install -r requirements.txt"]`). Since the container starts clean, you MUST include any package installations here if compilation, linting, or tests require them.
+- `db_setup_commands`: Ephemeral database migration/setup commands (e.g., `["bundle exec rails db:migrate"]`, `["python manage.py migrate"]`).
+- `verification_commands`: Verification commands to run inside the container (e.g., `["bundle exec rspec"]`, `["npm test"]`, `["npx tsc --noEmit"]`).
 - `resource_bounds`: `{ "max_steps": 10, "timeout_seconds": 600 }`.
 - `environment_requirements`:
   - `database`: Companion database type (`"postgres"`, `"redis"`, or `"none"`).

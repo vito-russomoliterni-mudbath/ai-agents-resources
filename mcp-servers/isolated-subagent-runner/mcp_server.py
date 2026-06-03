@@ -65,7 +65,10 @@ class McpServer:
                             "inputSchema": {
                                 "type": "object",
                                 "properties": {
-                                    "task_id": {"type": "string"},
+                                    "task_id": {
+                                        "type": "string",
+                                        "description": "Unique, short, lowercase alphanumeric slug (e.g., 'issue-19', 'feat-auth'). Auto-generate this slug based on the active ticket, issue description, or branch—do NOT ask the user for it."
+                                    },
                                     "summary": {"type": "string"},
                                     "files_to_read": {"type": "array", "items": {"type": "string"}},
                                     "instructions": {
@@ -81,6 +84,7 @@ class McpServer:
                                         }
                                     },
                                     "migration_file_globs": {"type": "array", "items": {"type": "string"}},
+                                    "setup_commands": {"type": "array", "items": {"type": "string"}, "description": "Optional environment or package setup commands (e.g. 'npm install', 'bundle install')"},
                                     "db_setup_commands": {"type": "array", "items": {"type": "string"}},
                                     "verification_commands": {"type": "array", "items": {"type": "string"}},
                                     "resource_bounds": {
@@ -159,6 +163,7 @@ class McpServer:
         files_to_read = args["files_to_read"]
         instructions = args["instructions"]
         migration_file_globs = args["migration_file_globs"]
+        setup_commands = args.get("setup_commands", [])
         db_setup_commands = args["db_setup_commands"]
         verification_commands = args["verification_commands"]
         resource_bounds = args["resource_bounds"]
@@ -238,7 +243,16 @@ class McpServer:
             if db_container:
                 db_helper.run_cmd(["network", "connect", network_name, container_name])
 
-            # Step 7: Pre-Edit DB migration/setup command runs
+            # Step 7: Pre-Edit environment and DB setup command runs
+            if setup_commands:
+                debug_log("Running initial environment/package setup commands...")
+                for cmd in setup_commands:
+                    code, out, err = docker_helper.exec_in_container(
+                        container_name, shlex.split(cmd), env=db_env, timeout=180
+                    )
+                    if code != 0:
+                        raise RuntimeError(f"Environment setup failed: {cmd}\nExit: {code}\nStdout: {out}\nStderr: {err}")
+
             if db_setup_commands:
                 debug_log("Running initial DB baseline migrations...")
                 for cmd in db_setup_commands:
