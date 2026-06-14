@@ -187,6 +187,7 @@ Review a GitHub pull request from a URL by validating ticket scope, code changes
 
 **Workflow:** Parse PR URL → Load PR data → Build scope checklist → Inspect diff → Audit comments/threads → Report findings-first
 
+---
 ## Installation
 
 ### Option 1: Automated Installation (Recommended)
