@@ -177,6 +177,21 @@ Safe, incremental refactoring while preserving behavior through continuous testi
 
 ---
 
+### 🚁 [orchestrator](skills/orchestrator/)
+Delegates heavy research, file edits, and diff review to opencode subagents to preserve the host agent's context budget.
+
+**Use when:**
+- Broad codebase exploration
+- Multi-file research
+- Sizable or repetitive edits
+- Pre-merge review
+
+**Agents:** `researcher`, `editor`, `reviewer` defined in `subagents/`
+
+**Workflow:** Dispatch `researcher` → Review summary → Dispatch `editor` → Dispatch `reviewer`
+
+---
+
 ### 🔎 [reviewing-pr-links](skills/reviewing-pr-links/)
 Review a GitHub pull request from a URL by validating ticket scope, code changes, checks, and all review threads.
 

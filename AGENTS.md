@@ -19,9 +19,16 @@ skills/
 |-- creating-subagents/              # Creating Claude Code sub-agents
 |-- fixing-bugs/                     # Systematic debugging and bug fixing
 |-- grill-me/                        # Relentless interview-style plan stress-testing
+|-- orchestrator/                    # Dispatching opencode subagents for research, edits, review
 |-- refactoring-agent-instructions/  # Refactoring bloated agent instruction files
 |-- refactoring-code/                # Safe, incremental refactoring
-`-- reviewing-pr-links/              # Auditing PR scope, checks, and comment resolution
+|-- reviewing-pr-links/              # Auditing PR scope, checks, and comment resolution
+|-- running-isolated-subagents/      # Running tasks inside isolated container sandbox
+`--              # Publishing ephemeral dev apps behind Traefik
+subagents/
+|-- researcher.md                    # Read-only codebase exploration
+|-- editor.md                        # Precise, scoped file edits
+`-- reviewer.md                      # Diff review, reports issues
 ```
 
 ## Working with Skills
