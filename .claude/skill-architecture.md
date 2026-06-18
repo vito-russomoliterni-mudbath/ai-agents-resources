@@ -39,11 +39,9 @@ Each phase uses specific Claude Code tools:
 ## Skill Invocation Patterns
 
 Skills handle different scopes:
-- **Diff-based** - Compare against base branch (`adding-tests`, `reviewing-pr-links`)
-- **Feature-focused** - Target a specific outcome (`building-features`, `creating-automation-scripts`)
-- **Whole-codebase** - Scan and improve broad areas (`refactoring-code`)
-- **Interactive** - Ask the user for scope and choices (`adding-memory`, `creating-subagents`, `refactoring-agent-instructions`)
-- **Transformation-focused** - Convert one instruction format into another (`building-skills`)
+- **Interactive** - Ask the user questions iteratively to reach shared understanding (`grill-me`)
+- **Delegation-based** - Dispatch subagents and synthesise results (`orchestrator`, `showlinks`)
+- **Lifecycle-based** - Manage an external resource through its full lifecycle ()
 
 ## Progressive Disclosure Principle
 

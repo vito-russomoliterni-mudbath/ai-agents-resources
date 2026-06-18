@@ -10,22 +10,10 @@ Collection of reusable Claude Code skills for software development workflows. Ea
 
 ```text
 skills/
-|-- adding-memory/                   # Capturing project knowledge and best practices
-|-- adding-tests/                    # Adding/updating unit tests for code changes
-|-- building-features/               # Feature development workflow
-|-- building-skills/                 # Converting workflows to Claude skills
-|-- cleaning-git-branches/           # Managing local git branches
-|-- creating-automation-scripts/     # Building automation scripts across environments
-|-- creating-subagents/              # Creating Claude Code sub-agents
-|-- fixing-bugs/                     # Systematic debugging and bug fixing
 |-- grill-me/                        # Relentless interview-style plan stress-testing
 |-- orchestrator/                    # Dispatching opencode subagents for research, edits, review
-|-- refactoring-agent-instructions/  # Refactoring bloated agent instruction files
-|-- refactoring-code/                # Safe, incremental refactoring
-|-- reviewing-pr-links/              # Auditing PR scope, checks, and comment resolution
-|-- plan-reviewer/                   # Validating execution plans before running them
-|-- showlinks/                       # Web research — finding official docs and sources
-`--              # Publishing ephemeral dev apps behind Traefik
+`-- showlinks/                       # Web research — finding official docs and sources
+archive/                             # Retired skills (not auto-installed)
 subagents/
 |-- researcher.md                    # Read-only codebase exploration
 |-- editor.md                        # Precise, scoped file edits
@@ -93,6 +81,5 @@ See [INSTALL.md](INSTALL.md) for detailed installation documentation.
 - [Skill Patterns](.claude/skill-patterns.md) - Common patterns and workflows
 - [Skill Development](.claude/skill-development.md) - Creating/modifying skills
 - [Skill Reference](.claude/skill-reference.md) - Quick reference for each skill
-- [Plan Reviewer](skills/plan-reviewer/SKILL.md) - Validating execution plans before running them
 - [Showlinks](skills/showlinks/SKILL.md) - Web research and official documentation lookup
 

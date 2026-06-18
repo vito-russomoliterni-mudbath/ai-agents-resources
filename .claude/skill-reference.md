@@ -1,106 +1,35 @@
 # Skill Reference Guide
 
-Quick reference for each skill's unique characteristics and workflows.
+Quick reference for each active skill's unique characteristics and workflows.
 
-## adding-memory
+## grill-me
 
-**Purpose:** Capture project knowledge and best practices in appropriate documentation files.
+**Purpose:** Relentlessly interview the user about a plan or design until every branch of the decision tree is resolved.
 
-**Key Feature:** Uses a scope decision tree to determine where knowledge belongs (personal/project/local CLAUDE.md vs structured docs).
+**Key Feature:** Asks one question at a time, provides a recommended answer, and walks each decision branch iteratively until shared understanding is reached.
 
-**Workflow:** Clarify -> Determine scope -> Choose location -> Format -> Implement -> Verify
+**Workflow:** Ask one question → provide recommendation → resolve branch → repeat until no open questions remain
 
-## adding-tests
+## orchestrator
 
-**Purpose:** Add or update unit tests for code changes and iterate until all tests pass.
+**Purpose:** Delegate research, file edits, and diff review to opencode subagents to preserve the host agent's context budget.
 
-**Key Feature:** Detects test framework automatically, supports diff-based (PR review) or feature-focused (specific area) modes.
+**Key Feature:** Dispatches three specialised subagents (`researcher`, `editor`, `reviewer`) defined in `subagents/`.
 
-**Workflow:** Detect framework -> Identify changes -> Baseline -> Add tests -> Iterate until green
+**Workflow:** Dispatch `researcher` → review summary → dispatch `editor` → dispatch `reviewer`
 
-**Modes:**
-- Diff-based: Compare against develop branch
-- Feature-focused: Target specific area
-- Coverage audit: Scan for gaps
+## 
 
-## building-features
+**Purpose:** Publish an ephemeral dev app running in a container behind a public Traefik-backed URL.
 
-**Purpose:** Implement new features using a structured approach.
+**Key Feature:** Manages the Traefik reverse-proxy route and container firewall port lifecycle. Includes known gotchas for Vite host checks and orphan processes.
 
-**Key Feature:** Structured phases with quality gates at each step.
+**Workflow:** Start app → patch allowedHosts if Vite → publish → work → remove route
 
-**Workflow:** Plan -> Task list -> Documentation -> Code -> Verify -> QA -> Iterate
+## showlinks
 
-**Principle:** Avoid over-engineering, keep solutions minimal
+**Purpose:** Find official documentation and reputable sources for a topic, then return direct vetted links.
 
-## cleaning-git-branches
+**Key Feature:** Dispatches a reviewer subagent to validate source quality before returning links.
 
-**Purpose:** Find and help clean up local git branches that have no remote or have been untouched for 30+ days.
-
-**Key Feature:** Identifies "gone" branches (whose remote was deleted) and stale branches based on committer date.
-
-**Workflow:** Identify "gone" branches -> Identify stale branches (>30 days) -> Present report -> Ask for user confirmation -> Perform deletion
-
-## building-skills
-
-**Purpose:** Convert AI assistant workflows into Agent Skills open standard compatible skills.
-
-**Key Feature:** Transforms workflows from various tools (Claude Code, Cursor, Windsurf, Aider, etc.) into properly formatted skills following the Agent Skills open standard specification (agentskills.io).
-
-**Workflow:** Gather input -> Analyse patterns -> Design structure -> Validate name -> Write description -> Create SKILL.md -> Populate resources -> Validate compliance -> Test
-
-**Specification:** Follows Agent Skills open standard v1.0 and works with agents that support the format.
-
-## creating-automation-scripts
-
-**Purpose:** Create automation scripts for repetitive tasks with environment-aware setup and safe execution patterns.
-
-**Key Feature:** Detects environment constraints first, then selects script strategy and validation approach.
-
-**Workflow:** Detect environment -> Clarify requirements -> Design script -> Implement -> Validate safety and idempotency
-
-## creating-subagents
-
-**Purpose:** Create Claude Code sub-agents through guided task analysis and configuration design.
-
-**Key Feature:** Uses decision logic to recommend model, tool access, permission mode, and instruction structure.
-
-**Workflow:** Discovery -> Analysis -> Design -> Validation -> Output
-
-## fixing-bugs
-
-**Purpose:** Systematically debug and fix software defects.
-
-**Key Feature:** Follows a reproducible debugging approach with root cause analysis.
-
-**Workflow:** Reproduce -> Root cause analysis -> Minimal fix -> Test -> Regression test
-
-**Principle:** Fix the root cause, not symptoms
-
-## refactoring-agent-instructions
-
-**Purpose:** Refactor bloated agent instruction files using progressive disclosure principles.
-
-**Key Feature:** Produces a minimal root file with links to categorised detailed files.
-
-**Workflow:** Find contradictions -> Extract essentials -> Categorise -> Create structure -> Prune
-
-**Goal:** Root file under 50 lines plus categorised linked files
-
-## refactoring-code
-
-**Purpose:** Safe, incremental refactoring while preserving behavior.
-
-**Key Feature:** Incremental refactoring with tests after each change.
-
-**Workflow:** Baseline -> Detect smells -> Apply patterns -> Test after each step -> Commit
-
-**Principle:** Small steps, always green, commit frequently
-
-## reviewing-pr-links
-
-**Purpose:** Review a GitHub pull request from a URL against ticket scope, changed code, checks, and review-thread integrity.
-
-**Key Feature:** Validates whether resolved comments are actually resolved in code, not just marked resolved in GitHub.
-
-**Workflow:** Parse PR URL -> Load PR metadata -> Build scope checklist -> Inspect code changes -> Audit comments/threads -> Report findings first
+**Workflow:** Find official docs → confirm version match → dispatch reviewer → refine if rejected → return vetted links

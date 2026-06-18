@@ -3,10 +3,12 @@
 ## [Unreleased]
 
 ### Added
-- **New skill: reviewing-pr-links** - Reviews GitHub pull requests from a URL by validating ticket scope, changed code, status checks, and comment/review-thread resolution integrity.
+- **Mistral Vibe support** — documented `~/.vibe/skills/` as the global skills path for Mistral Vibe (terminal coding agent, formerly Le Chat). Added to the manual installation table in README. Automated install script support not yet added.
 
 ### Changed
-- Updated repository documentation (`README.md`, `CLAUDE.md`, `.claude/skill-reference.md`, `.claude/skill-architecture.md`, `INSTALL.md`) to reflect the current skill set and naming.
+- **Reduced active skill set to 4** — `grill-me`, `orchestrator`, `showlinks` are the only skills auto-installed going forward. The install script discovers skills by enumerating `skills/`, so moving the rest to `archive/` is sufficient to stop auto-installation.
+- **Archived 13 skills** — moved to `archive/` (preserved in git history, not deleted): `adding-memory`, `adding-tests`, `building-features`, `building-skills`, `cleaning-git-branches`, `creating-automation-scripts`, `creating-subagents`, `fixing-bugs`, `plan-reviewer`, `refactoring-agent-instructions`, `refactoring-code`, `reviewing-pr-links`, `running-isolated-subagents`.
+- Updated `README.md`, `AGENTS.md`/`CLAUDE.md`, `.claude/skill-reference.md`, `.claude/skill-architecture.md` to reflect the reduced active set.
 
 ## [2.0.0] - 2026-01-31
 

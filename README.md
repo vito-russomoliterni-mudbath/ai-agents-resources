@@ -5,7 +5,8 @@ A collection of reusable AI Agent skills for software development workflows. The
 ## 🧭 Navigation
 
 - [What are Skills?](#what-are-skills)
-- [Available Skills](#available-skills)
+- [Active Skills](#active-skills)
+- [Archived Skills](#archived-skills)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Skill Structure](#skill-structure)
@@ -25,104 +26,7 @@ Skills are structured workflows that guide AI coding assistants through complex 
 - Follows established patterns and best practices
 - Provides templates and reference documentation
 
-## Available Skills
-
-### 💾 [adding-memory](skills/adding-memory/)
-Capture project knowledge and best practices in appropriate documentation files.
-
-**Use when:**
-- User says ""remember this""
-- Documenting patterns or guidelines
-- Saving team best practices
-
-**Workflow:** Clarify → Determine scope → Choose location → Format → Implement → Verify
-
-**Scope decision:** Personal CLAUDE.md vs Project CLAUDE.md vs Local CLAUDE.md vs Structured docs
-
----
-
-### 🧪 [adding-tests](skills/adding-tests/)
-Add or update unit tests for code changes and iterate until all tests pass.
-
-**Use when:**
-- Adding tests for a PR
-- Testing a specific feature
-- Finding test coverage gaps
-
-**Workflow:** Detect framework → Identify changes → Baseline → Add tests → Iterate until green
-
-**Modes:**
-- **Diff-based:** Compare against develop branch
-- **Feature-focused:** Target specific area
-- **Coverage audit:** Scan for gaps
-
----
-
-### ✨ [building-features](skills/building-features/)
-Implement new features using a structured approach with planning, implementation, testing, and quality assurance.
-
-**Use when:**
-- Adding new functionality
-- Building components
-- Developing new capabilities
-
-**Workflow:** Plan → Task list → Documentation → Code → Verify → QA → Iterate
-
----
-
-### 🧹 [cleaning-git-branches](skills/cleaning-git-branches/)
-Finds and helps clean up local git branches that have no remote or have been untouched for 30+ days.
-
-**Use when:**
-- Cleaning up the local workspace
-- Removing merged or abandoned branches
-- Managing a large number of stale local branches
-
-**Workflow:** Identify "gone" branches → Identify stale branches (>30 days) → Present report → Ask for confirmation → Perform deletion
-
----
-
-### 🧰 [building-skills](skills/building-skills/)
-Create or update Agent Skills-compliant skills from workflows, prompts, or existing instructions.
-
-**Use when:**
-- Creating a new skill
-- Converting a workflow or prompt into a skill
-- Updating a skill to match spec or best practices
-
-**Workflow:** Gather input → Analyze patterns → Design structure → Validate name → Write SKILL.md → Populate resources → Validate → Test → Document
-
----
-
-### ⚙️ [creating-automation-scripts](skills/creating-automation-scripts/)
-Create automation scripts with environment-aware patterns and robust command handling.
-
-**Use when:**
-- Writing PowerShell, bash, or cross-platform automation
-- Automating repetitive developer tasks
-- Building setup or operational scripts
-
-**Workflow:** Detect environment → Clarify requirements → Design script → Implement → Validate safety and idempotency
-
----
-
-### 🤖 [creating-subagents](skills/creating-subagents/)
-Create effective Claude Code sub-agents through guided task analysis and configuration design.
-
-**Use when:**
-- Creating a new sub-agent for Claude Code
-- Configuring specialized agents for specific tasks
-- Setting up delegation for complex workflows
-
-**Workflow:** Discovery → Analysis → Design → Validation → Output
-
-**Features:**
-- Decision tree for recommending optimal configurations
-- Skills and MCP server integration guidance
-- Built-in archetypes (Explorer, Implementer, Tester, etc.)
-- Always asks for user confirmation before generating
-
----
+## Active Skills
 
 ### 🔥 [grill-me](skills/grill-me/)
 Interview-style stress-test for plans and designs — relentlessly asks questions until every branch of the decision tree is resolved.
@@ -133,47 +37,6 @@ Interview-style stress-test for plans and designs — relentlessly asks question
 - Resolving dependencies between decisions iteratively
 
 **Workflow:** Ask one question at a time → provide recommended answer → walk each branch → reach shared understanding
-
----
-
-### 🐛 [fixing-bugs](skills/fixing-bugs/)
-Systematically debug and fix software defects through identification, analysis, and validated correction.
-
-**Use when:**
-- User reports a bug or error
-- Tests are failing
-- Application exhibits incorrect behavior
-- Regressions are detected
-
-**Workflow:** Reproduce → Root cause analysis → Minimal fix → Test → Regression test
-
----
-
-### 📝 [refactoring-agent-instructions](skills/refactoring-agent-instructions/)
-Refactor bloated agent instruction files using progressive disclosure principles.
-
-**Use when:**
-- CLAUDE.md or AGENTS.md is too long
-- Instructions need better organization
-- Context token usage is high
-
-**Workflow:** Find contradictions → Extract essentials → Categorize → Create structure → Prune
-
-**Goal:** Minimal root file (<50 lines) + categorized linked files
-
----
-
-### ♻️ [refactoring-code](skills/refactoring-code/)
-Safe, incremental refactoring while preserving behavior through continuous testing.
-
-**Use when:**
-- Code is hard to maintain or understand
-- Duplication needs consolidation
-- Structure needs improvement
-
-**Workflow:** Baseline → Detect smells → Plan → Refactor → Test → Commit → Repeat
-
-**Key principle:** Small steps, tests after each change, commit when green
 
 ---
 
@@ -192,30 +55,6 @@ Delegates heavy research, file edits, and diff review to opencode subagents to p
 
 ---
 
-### 🔎 [reviewing-pr-links](skills/reviewing-pr-links/)
-Review a GitHub pull request from a URL by validating ticket scope, code changes, checks, and all review threads.
-
-**Use when:**
-- Auditing whether a PR truly matches its ticket
-- Verifying whether resolved comments were genuinely addressed
-- Performing high-rigour PR quality reviews
-
-**Workflow:** Parse PR URL → Load PR data → Build scope checklist → Inspect diff → Audit comments/threads → Report findings-first
-
----
-
-### 🔍 [plan-reviewer](skills/plan-reviewer/)
-Reviews and validates a proposed execution plan in plan mode before it runs — checks command accuracy, best-practice adherence, and codebase compatibility.
-
-**Use when:**
-- A draft plan has been generated and you want to validate it before execution
-- Verifying commands and decisions are compatible with the existing codebase
-- Ensuring the plan follows project and industry best practices
-
-**Workflow:** Systematic command validation → Best-practice check → Codebase compatibility check → Report findings
-
----
-
 ### 🔗 [showlinks](skills/showlinks/)
 Research topics by finding official documentation and reputable sources, then delivering direct links with recommendations.
 
@@ -227,6 +66,16 @@ Research topics by finding official documentation and reputable sources, then de
 **Workflow:** Find official docs → Confirm version match → Dispatch reviewer subagent → Refine if rejected → Return vetted links
 
 ---
+## Archived Skills
+
+The following skills are preserved in [`archive/`](archive/) but are no longer
+auto-installed by the install script. They can still be copied manually if needed.
+
+`adding-memory` · `adding-tests` · `building-features` · `building-skills` ·
+`cleaning-git-branches` · `creating-automation-scripts` · `creating-subagents` ·
+`fixing-bugs` · `plan-reviewer` · `refactoring-agent-instructions` ·
+`refactoring-code` · `reviewing-pr-links` · `running-isolated-subagents`
+
 ## Installation
 
 ### Option 1: Automated Installation (Recommended)
@@ -287,7 +136,18 @@ The script will:
 - Clean up old versions before installing new ones (prevents orphaned files)
 
 ### Option 2: Manual Installation
-Copy any skill directory from `skills/` into your agent's skills directory (e.g., `~/.claude/skills/` or `~/.gemini/skills/`).
+Copy any skill directory from `skills/` into your agent's skills directory:
+
+| Agent | Global skills path |
+|---|---|
+| Claude Code | `~/.claude/skills/` |
+| OpenCode | `~/.config/opencode/skills/` |
+| Mistral Vibe | `~/.vibe/skills/` |
+| Codex | `~/.codex/skills/` |
+| Gemini CLI | `~/.gemini/skills/` |
+| Gemini Antigravity | `~/.gemini/antigravity/global_skills/` |
+
+> **Note:** The automated install script supports Claude Code, Codex, Gemini, and OpenCode. Mistral Vibe requires manual installation for now.
 
 ## Usage
 
@@ -297,14 +157,8 @@ Skills can be invoked using the `/skill-name` syntax in Claude Code:
 
 ```
 /grill-me "My plan to migrate the auth service to OAuth2"
-/fixing-bugs "Login form throws error when password is empty"
-/building-features "Add dark mode toggle to header"
-/creating-automation-scripts "Create a script to rotate logs older than 14 days"
-/adding-tests
-/refactoring-code
-/reviewing-pr-links "https://github.com/owner/repo/pull/123"
-/adding-memory "Always use async/await for database operations"
-/refactoring-agent-instructions
+/orchestrator "Research how authentication is handled across the codebase"
+/showlinks "official docs for Vite server.allowedHosts"
 ```
 
 ### Manual Workflow
@@ -404,7 +258,7 @@ MIT License - see [LICENSE](LICENSE) for details
 
 ## Credits
 
-Created for use with [Claude Code](https://claude.ai/code) by Anthropic.
+Compatible with Claude Code, OpenCode, Mistral Vibe, Codex, and Gemini CLI via the [Agent Skills open standard](https://agentskills.io/).
 
 ---
 
