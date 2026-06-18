@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 # SYNOPSIS
-#     Install or update Claude Code, Codex, and Gemini skills to local agent home directories.
+#     Install or update skills to local agent home directories (Claude Code, Codex, Gemini, OpenCode, Mistral Vibe).
 
 # Default variables
 SKIP_PROMPTS=0
@@ -20,11 +20,11 @@ NC='\033[0m'
 
 show_help() {
     cat << EOF
-Install or update Claude Code, Codex, and Gemini skills to local agent home directories.
+Install or update skills to local agent home directories.
 
 This script copies skills from this repository to your local Claude Code, Codex,
-and/or Gemini directories. It will prompt for confirmation before installing or
-updating each skill, showing which files will be affected.
+Gemini, OpenCode, and/or Mistral Vibe directories. It will prompt for confirmation
+before installing or updating each skill, showing which files will be affected.
 
 Options:
   -y                  Skip confirmation prompts and install/update all skills automatically
@@ -69,12 +69,12 @@ msg_verbose() { [[ "$VERBOSE" -eq 1 ]] && echo -e "${GRAY}[VERBOSE] $1${NC}"; }
 msg_dryrun() { [[ "$DRY_RUN" -eq 1 ]] && echo -e "${MAGENTA}[DRY RUN] $1${NC}"; }
 
 # Agents configuration
-declare -A AGENT_NAMES=([claude]="Claude Code" [codex]="Codex" [gemini]="Gemini (Antigravity)" [gemini_cli]="Gemini CLI" [opencode]="OpenCode")
-declare -A AGENT_ENV=([claude]="CLAUDE_HOME" [codex]="CODEX_HOME" [gemini]="GEMINI_HOME" [gemini_cli]="GEMINI_HOME" [opencode]="OPENCODE_HOME")
-declare -A AGENT_DEFAULT_DIR=([claude]=".claude" [codex]=".codex" [gemini]=".gemini" [gemini_cli]=".gemini" [opencode]=".config/opencode")
-declare -A AGENT_SKILLS_SUBDIR=([claude]="skills" [codex]="skills" [gemini]="antigravity/global_skills" [gemini_cli]="skills" [opencode]="skills")
+declare -A AGENT_NAMES=([claude]="Claude Code" [codex]="Codex" [gemini]="Gemini (Antigravity)" [gemini_cli]="Gemini CLI" [opencode]="OpenCode" [vibe]="Mistral Vibe")
+declare -A AGENT_ENV=([claude]="CLAUDE_HOME" [codex]="CODEX_HOME" [gemini]="GEMINI_HOME" [gemini_cli]="GEMINI_HOME" [opencode]="OPENCODE_HOME" [vibe]="VIBE_HOME")
+declare -A AGENT_DEFAULT_DIR=([claude]=".claude" [codex]=".codex" [gemini]=".gemini" [gemini_cli]=".gemini" [opencode]=".config/opencode" [vibe]=".vibe")
+declare -A AGENT_SKILLS_SUBDIR=([claude]="skills" [codex]="skills" [gemini]="antigravity/global_skills" [gemini_cli]="skills" [opencode]="skills" [vibe]="skills")
 
-SELECTED_AGENTS=("claude" "codex" "gemini" "gemini_cli" "opencode")
+SELECTED_AGENTS=("claude" "codex" "gemini" "gemini_cli" "opencode" "vibe")
 
 if [[ "$SKIP_AGENT_PROMPT" -eq 0 ]]; then
     echo -e "\n${CYAN}Select which agent to install skills for:${NC}"
@@ -82,15 +82,17 @@ if [[ "$SKIP_AGENT_PROMPT" -eq 0 ]]; then
     echo -e "${GRAY}  [2] Codex${NC}"
     echo -e "${GRAY}  [3] Gemini (CLI + Antigravity)${NC}"
     echo -e "${GRAY}  [4] OpenCode${NC}"
-    echo -e "${GRAY}  [5] All (default)${NC}"
-    read -p "Choose an option [1/2/3/4/5]: " agent_choice
+    echo -e "${GRAY}  [5] Mistral Vibe${NC}"
+    echo -e "${GRAY}  [6] All (default)${NC}"
+    read -p "Choose an option [1/2/3/4/5/6]: " agent_choice
 
     case "${agent_choice,,}" in
         1|c|claude) SELECTED_AGENTS=("claude") ;;
         2|x|codex) SELECTED_AGENTS=("codex") ;;
         3|g|gemini) SELECTED_AGENTS=("gemini" "gemini_cli") ;;
         4|o|opencode) SELECTED_AGENTS=("opencode") ;;
-        5|a|all|"") SELECTED_AGENTS=("claude" "codex" "gemini" "gemini_cli" "opencode") ;;
+        5|v|vibe) SELECTED_AGENTS=("vibe") ;;
+        6|a|all|"") SELECTED_AGENTS=("claude" "codex" "gemini" "gemini_cli" "opencode" "vibe") ;;
         *) msg_warning "Unrecognized selection '$agent_choice'. Defaulting to all agents." ;;
     esac
 else

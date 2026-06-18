@@ -129,7 +129,7 @@ cd ai-agents-resources
 *(Note: The same flags apply to `install-skills.ps1` for Windows users, e.g., `.\install-skills.ps1 -y`, `.\install-skills.ps1 -DryRun`)*
 
 The script will:
-- Let you choose which agents to install skills for (Claude Code, Codex, Gemini Antigravity, Gemini CLI, or All)
+- Let you choose which agents to install skills for (Claude Code, Codex, Gemini, OpenCode, Mistral Vibe, or All)
 - Install skills to respective directories (e.g., `~/.claude/skills/`, `~/.gemini/skills/`, etc.)
 - Show which files will be added, updated, or deleted before making changes
 - Ask for confirmation before each skill (unless using `-y` flag)
@@ -147,7 +147,7 @@ Copy any skill directory from `skills/` into your agent's skills directory:
 | Gemini CLI | `~/.gemini/skills/` |
 | Gemini Antigravity | `~/.gemini/antigravity/global_skills/` |
 
-> **Note:** The automated install script supports Claude Code, Codex, Gemini, and OpenCode. Mistral Vibe requires manual installation for now.
+> **Note:** The automated install script supports all agents listed above. Override the default home directory with the corresponding env var (e.g. `VIBE_HOME`, `OPENCODE_HOME`).
 
 ## Usage
 

@@ -3,7 +3,7 @@
 ## [Unreleased]
 
 ### Added
-- **Mistral Vibe support** — documented `~/.vibe/skills/` as the global skills path for Mistral Vibe (terminal coding agent, formerly Le Chat). Added to the manual installation table in README. Automated install script support not yet added.
+- **Mistral Vibe support** — added to both `install-skills.sh` and `install-skills.ps1` as agent key `vibe` (home `~/.vibe/`, skills subdir `skills/`, env override `VIBE_HOME`). Selectable as option 5 in the agent prompt; "All" shifts to option 6. Also documented in the manual installation table in README.
 
 ### Changed
 - **Reduced active skill set to 4** — `grill-me`, `orchestrator`, `showlinks` are the only skills auto-installed going forward. The install script discovers skills by enumerating `skills/`, so moving the rest to `archive/` is sufficient to stop auto-installation.

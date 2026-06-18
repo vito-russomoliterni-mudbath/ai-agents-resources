@@ -1,12 +1,13 @@
 #!/usr/bin/env pwsh
 <#
 .SYNOPSIS
-    Install or update Claude Code and Codex skills to local agent home directories.
+    Install or update skills to local agent home directories (Claude Code, Codex, Gemini, OpenCode, Mistral Vibe).
 
 .DESCRIPTION
-    This script copies skills from this repository to your local Claude Code, Codex, and/or Gemini
-    home directories (~/.claude/skills/, ~/.codex/skills/, ~/.gemini/antigravity/global_skills/). 
-    It will prompt for confirmation before installing or updating each skill, showing which files 
+    This script copies skills from this repository to your local Claude Code, Codex, Gemini,
+    OpenCode, and/or Mistral Vibe home directories (~/.claude/skills/, ~/.codex/skills/,
+    ~/.gemini/antigravity/global_skills/, ~/.config/opencode/skills/, ~/.vibe/skills/).
+    It will prompt for confirmation before installing or updating each skill, showing which files
     will be affected. Use the -y flag to skip confirmations and install/update all skills automatically.
 
 .PARAMETER y
@@ -142,10 +143,11 @@ $agents = @(
     [pscustomobject]@{ Key = "codex"; DisplayName = "Codex"; EnvVar = "CODEX_HOME"; DefaultFolder = ".codex"; SkillsFolder = "skills" },
     [pscustomobject]@{ Key = "gemini"; DisplayName = "Gemini (Antigravity)"; EnvVar = "GEMINI_HOME"; DefaultFolder = ".gemini"; SkillsFolder = "antigravity/global_skills" },
     [pscustomobject]@{ Key = "gemini_cli"; DisplayName = "Gemini CLI"; EnvVar = "GEMINI_HOME"; DefaultFolder = ".gemini"; SkillsFolder = "skills" },
-    [pscustomobject]@{ Key = "opencode"; DisplayName = "OpenCode"; EnvVar = "OPENCODE_HOME"; DefaultFolder = ".config/opencode"; SkillsFolder = "skills" }
+    [pscustomobject]@{ Key = "opencode"; DisplayName = "OpenCode"; EnvVar = "OPENCODE_HOME"; DefaultFolder = ".config/opencode"; SkillsFolder = "skills" },
+    [pscustomobject]@{ Key = "vibe"; DisplayName = "Mistral Vibe"; EnvVar = "VIBE_HOME"; DefaultFolder = ".vibe"; SkillsFolder = "skills" }
 )
 
-$selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli", "opencode")
+$selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli", "opencode", "vibe")
 if (-not $SkipAgentPrompt) {
     Write-Host ""
     Write-Host "Select which agent to install skills for:" -ForegroundColor Cyan
@@ -153,8 +155,9 @@ if (-not $SkipAgentPrompt) {
     Write-Host "  [2] Codex" -ForegroundColor Gray
     Write-Host "  [3] Gemini (CLI + Antigravity)" -ForegroundColor Gray
     Write-Host "  [4] OpenCode" -ForegroundColor Gray
-    Write-Host "  [5] All (default)" -ForegroundColor Gray
-    $agentChoice = Read-Host "Choose an option [1/2/3/4/5]"
+    Write-Host "  [5] Mistral Vibe" -ForegroundColor Gray
+    Write-Host "  [6] All (default)" -ForegroundColor Gray
+    $agentChoice = Read-Host "Choose an option [1/2/3/4/5/6]"
 
     $normalizedChoice = ($agentChoice | ForEach-Object { $_.Trim().ToLower() })
     switch -regex ($normalizedChoice) {
@@ -162,10 +165,11 @@ if (-not $SkipAgentPrompt) {
         "^(2|x|codex)$" { $selectedAgentKeys = @("codex") }
         "^(3|g|gemini)$" { $selectedAgentKeys = @("gemini", "gemini_cli") }
         "^(4|o|opencode)$" { $selectedAgentKeys = @("opencode") }
-        "^(5|a|both|all|)$" { $selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli", "opencode") }
+        "^(5|v|vibe)$" { $selectedAgentKeys = @("vibe") }
+        "^(6|a|both|all|)$" { $selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli", "opencode", "vibe") }
         default {
             Write-Warning-Custom "Unrecognized selection '$agentChoice'. Defaulting to all agents."
-            $selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli", "opencode")
+            $selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli", "opencode", "vibe")
         }
     }
 } else {
