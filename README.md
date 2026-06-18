@@ -203,6 +203,30 @@ Review a GitHub pull request from a URL by validating ticket scope, code changes
 **Workflow:** Parse PR URL → Load PR data → Build scope checklist → Inspect diff → Audit comments/threads → Report findings-first
 
 ---
+
+### 🔍 [plan-reviewer](skills/plan-reviewer/)
+Reviews and validates a proposed execution plan in plan mode before it runs — checks command accuracy, best-practice adherence, and codebase compatibility.
+
+**Use when:**
+- A draft plan has been generated and you want to validate it before execution
+- Verifying commands and decisions are compatible with the existing codebase
+- Ensuring the plan follows project and industry best practices
+
+**Workflow:** Systematic command validation → Best-practice check → Codebase compatibility check → Report findings
+
+---
+
+### 🔗 [showlinks](skills/showlinks/)
+Research topics by finding official documentation and reputable sources, then delivering direct links with recommendations.
+
+**Use when:**
+- User asks to search online or look up a topic
+- Researching a library, tool, or framework
+- Finding documentation or investigating anything requiring web research
+
+**Workflow:** Find official docs → Confirm version match → Dispatch reviewer subagent → Refine if rejected → Return vetted links
+
+---
 ## Installation
 
 ### Option 1: Automated Installation (Recommended)
