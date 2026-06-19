@@ -55,7 +55,7 @@ Delegates heavy research, file edits, and diff review to opencode subagents to p
 
 ---
 
-### 🔗 [showlinks](skills/showlinks/)
+### 🔗 [show-links](skills/show-links/)
 Research topics by finding official documentation and reputable sources, then delivering direct links with recommendations.
 
 **Use when:**
@@ -158,7 +158,7 @@ Skills can be invoked using the `/skill-name` syntax in Claude Code:
 ```
 /grill-me "My plan to migrate the auth service to OAuth2"
 /orchestrator "Research how authentication is handled across the codebase"
-/showlinks "official docs for Vite server.allowedHosts"
+/show-links "official docs for Vite server.allowedHosts"
 ```
 
 ### Manual Workflow

@@ -12,7 +12,7 @@ Collection of reusable Claude Code skills for software development workflows. Ea
 skills/
 |-- grill-me/                        # Relentless interview-style plan stress-testing
 |-- orchestrator/                    # Dispatching opencode subagents for research, edits, review
-`-- showlinks/                       # Web research — finding official docs and sources
+`-- show-links/                      # Web research — finding official docs and sources
 archive/                             # Retired skills (not auto-installed)
 subagents/
 |-- researcher.md                    # Read-only codebase exploration
@@ -81,5 +81,5 @@ See [INSTALL.md](INSTALL.md) for detailed installation documentation.
 - [Skill Patterns](.claude/skill-patterns.md) - Common patterns and workflows
 - [Skill Development](.claude/skill-development.md) - Creating/modifying skills
 - [Skill Reference](.claude/skill-reference.md) - Quick reference for each skill
-- [Showlinks](skills/showlinks/SKILL.md) - Web research and official documentation lookup
+- [Show Links](skills/show-links/SKILL.md) - Web research and official documentation lookup
 
