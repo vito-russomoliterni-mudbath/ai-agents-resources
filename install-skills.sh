@@ -27,7 +27,7 @@ By default on Linux/macOS, skills are installed as symlinks so edits propagate
 live. On other platforms (or when --copy is passed), files are copied instead.
 
 In addition to skills, this script installs OpenCode subagents (subagents/*.md)
-and a dispatch script (scripts/dispatch.sh) when OpenCode is selected.
+and a dispatch script (skills/orchestrator/scripts/dispatch.sh) when OpenCode is selected.
 
 Options:
   -y                  Skip confirmation prompts and install/update all skills automatically
@@ -366,7 +366,7 @@ install_subagents() {
 }
 
 install_dispatch_script() {
-    local source="$SCRIPT_DIR/scripts/dispatch.sh"
+    local source="$SCRIPT_DIR/skills/orchestrator/scripts/dispatch.sh"
     local dest_dir="$HOME/.local/bin"
     local dest="$dest_dir/dispatch-openagent"
 

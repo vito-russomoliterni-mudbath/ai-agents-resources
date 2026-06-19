@@ -19,8 +19,6 @@ subagents/
 |-- editor.md                        # Precise, scoped file edits
 |-- researcher.md                    # Read-only codebase exploration
 `-- reviewer.md                      # Diff review, reports issues
-scripts/
-`-- dispatch.sh                      # Invoke opencode subagent with model fallback
 ```
 
 ## Working with Skills

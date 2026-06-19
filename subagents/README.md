@@ -8,7 +8,7 @@ Source-of-truth definitions for the custom opencode agents dispatched by the `or
 | `editor` | Precise, scoped edits | Yes |
 | `reviewer` | Diff review, reports issues | No |
 
-Model-agnostic — inherit the caller's model. Dispatch wrapper (`scripts/dispatch.sh`) handles model selection and fallback. Read-only roles are enforced by `permission.edit: deny`.
+Model-agnostic — inherit the caller's model. Dispatch wrapper (`skills/orchestrator/scripts/dispatch.sh`) handles model selection and fallback. Read-only roles are enforced by `permission.edit: deny`.
 
 **Why `mode: all`:** `opencode run --agent <name>` only accepts *primary* agents. A `mode: subagent` agent is ignored (opencode falls back to the default `build` agent). `mode: all` makes each agent dispatchable from the CLI *and* usable as an @mention subagent. Do not change these to `mode: subagent`.
 
