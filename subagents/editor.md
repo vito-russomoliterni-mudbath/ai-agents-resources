@@ -1,7 +1,6 @@
 ---
 description: Makes precise, scoped file edits exactly as instructed. Follows surrounding code style.
 mode: all
-model: opencode/deepseek-v4-flash-free
 temperature: 0.1
 permission:
   edit: allow

@@ -15,9 +15,12 @@ skills/
 `-- show-links/                      # Web research — finding official docs and sources
 archive/                             # Retired skills (not auto-installed)
 subagents/
-|-- researcher.md                    # Read-only codebase exploration
+|-- baseline-notes.md                # Agent baseline instructions
 |-- editor.md                        # Precise, scoped file edits
+|-- researcher.md                    # Read-only codebase exploration
 `-- reviewer.md                      # Diff review, reports issues
+scripts/
+`-- dispatch.sh                      # Invoke opencode subagent with model fallback
 ```
 
 ## Working with Skills
@@ -31,7 +34,38 @@ Each skill directory contains:
 ## Project Commands
 
 ### Installation Script
-Install/update skills to local Claude home (`~\.claude\skills\`):
+
+**Linux / macOS (Bash):**
+
+```bash
+# Interactive installation (prompts for each skill)
+./install-skills.sh
+
+# Automatic installation (no prompts)
+./install-skills.sh -y
+
+# Dry-run (preview without changes)
+./install-skills.sh --dry-run
+
+# Force copy instead of symlinks (default is symlink on Linux/macOS)
+./install-skills.sh --copy
+
+# Skip agent prompt (install to all agents)
+./install-skills.sh --skip-agent-prompt
+
+# Verbose mode (detailed output)
+./install-skills.sh -v
+
+# Combined flags
+./install-skills.sh -v -y               # Verbose automatic
+./install-skills.sh --dry-run -y         # Dry-run auto-install
+```
+
+By default on Linux/macOS, skills are installed as **symlinks** so edits in the source repo propagate live.
+Subagents (`subagents/*.md`) and the dispatch script (`scripts/dispatch.sh`) are automatically installed
+when OpenCode is selected.
+
+**Windows (PowerShell):**
 
 ```powershell
 # Interactive installation (prompts for each skill)

@@ -1,7 +1,6 @@
 ---
 description: Read-only codebase exploration. Locates files, traces usage, and reports findings without modifying anything.
 mode: all
-model: opencode/deepseek-v4-flash-free
 temperature: 0.1
 permission:
   edit: deny

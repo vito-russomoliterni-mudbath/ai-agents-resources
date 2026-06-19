@@ -1,7 +1,6 @@
 ---
 description: Reviews a diff or set of changes for bugs, scope creep, and quality. Reports issues; makes no changes.
 mode: all
-model: opencode/deepseek-v4-flash-free
 temperature: 0.1
 permission:
   edit: deny

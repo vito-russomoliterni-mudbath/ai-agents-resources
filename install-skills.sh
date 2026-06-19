@@ -8,6 +8,7 @@ SKIP_PROMPTS=0
 VERBOSE=0
 DRY_RUN=0
 SKIP_AGENT_PROMPT=0
+COPY_MODE=0
 
 # Color definitions
 RED='\033[0;31m'
@@ -22,13 +23,16 @@ show_help() {
     cat << EOF
 Install or update skills to local agent home directories.
 
-This script copies skills from this repository to your local Claude Code, Codex,
-Gemini, OpenCode, and/or Mistral Vibe directories. It will prompt for confirmation
-before installing or updating each skill, showing which files will be affected.
+By default on Linux/macOS, skills are installed as symlinks so edits propagate
+live. On other platforms (or when --copy is passed), files are copied instead.
+
+In addition to skills, this script installs OpenCode subagents (subagents/*.md)
+and a dispatch script (scripts/dispatch.sh) when OpenCode is selected.
 
 Options:
   -y                  Skip confirmation prompts and install/update all skills automatically
   --skip-agent-prompt Skip the agent selection prompt and install to all agents
+  --copy              Force copy behavior instead of symlinks
   -v                  Show detailed output
   --dry-run           Show what would be done without making changes
   -h, --help          Show help message
@@ -38,6 +42,7 @@ Examples:
   ./install-skills.sh -y
   ./install-skills.sh --skip-agent-prompt
   ./install-skills.sh --dry-run
+  ./install-skills.sh --copy -y
 EOF
 }
 
@@ -47,6 +52,7 @@ while [[ "$#" -gt 0 ]]; do
         -y) SKIP_PROMPTS=1 ;;
         -v) VERBOSE=1 ;;
         --dry-run|-DryRun) DRY_RUN=1 ;;
+        --copy) COPY_MODE=1 ;;
         --skip-agent-prompt|-SkipAgentPrompt) SKIP_AGENT_PROMPT=1 ;;
         -h|--help|-help) show_help; exit 0 ;;
         *) echo -e "${RED}Error: Invalid parameter(s): $1${NC}"; echo "Use --help for usage information"; exit 1 ;;
@@ -67,6 +73,71 @@ msg_warning() { echo -e "${YELLOW}$1${NC}"; }
 msg_error() { echo -e "${RED}$1${NC}"; }
 msg_verbose() { [[ "$VERBOSE" -eq 1 ]] && echo -e "${GRAY}[VERBOSE] $1${NC}"; }
 msg_dryrun() { [[ "$DRY_RUN" -eq 1 ]] && echo -e "${MAGENTA}[DRY RUN] $1${NC}"; }
+
+install_item() {
+    local source="$1"
+    local dest="$2"
+    local label="$3"
+
+    # Create parent directory if needed
+    local parent_dir
+    parent_dir="$(dirname "$dest")"
+    if [[ ! -d "$parent_dir" ]]; then
+        if [[ "$DRY_RUN" -eq 1 ]]; then
+            msg_dryrun "[$label] Would create directory: $parent_dir"
+        else
+            mkdir -p "$parent_dir"
+        fi
+    fi
+
+    # Dry run
+    if [[ "$DRY_RUN" -eq 1 ]]; then
+        if [[ -e "$dest" ]]; then
+            msg_dryrun "[$label] Would remove existing: $dest"
+        fi
+        if [[ "$COPY_MODE" -eq 1 ]]; then
+            msg_dryrun "[$label] Would copy from: $source"
+        else
+            msg_dryrun "[$label] Would symlink from: $source"
+        fi
+        msg_dryrun "[$label] Would install to: $dest"
+        return 0
+    fi
+
+    # Remove existing destination
+    if [[ -e "$dest" ]]; then
+        rm -rf "$dest"
+    fi
+
+    # Force copy mode
+    if [[ "$COPY_MODE" -eq 1 ]]; then
+        cp -R "$source" "$dest" 2>/dev/null
+        if [[ $? -eq 0 ]]; then
+            msg_verbose "[$label] Copied: $source -> $dest"
+            return 0
+        fi
+        msg_error "[$label] Failed to copy"
+        return 1
+    fi
+
+    # Try symlink with resolved absolute path
+    local resolved_source
+    resolved_source="$(realpath "$source" 2>/dev/null || readlink -f "$source" 2>/dev/null || echo "$source")"
+    if ln -s "$resolved_source" "$dest" 2>/dev/null; then
+        msg_verbose "[$label] Symlinked: $dest -> $resolved_source"
+        return 0
+    fi
+
+    # Symlink failed — fall back to copy
+    msg_warning "[$label] Symlink failed, falling back to copy"
+    cp -R "$source" "$dest" 2>/dev/null
+    if [[ $? -eq 0 ]]; then
+        msg_verbose "[$label] Copied: $source -> $dest"
+        return 0
+    fi
+    msg_error "[$label] Failed to install"
+    return 1
+}
 
 # Agents configuration
 declare -A AGENT_NAMES=([claude]="Claude Code" [codex]="Codex" [gemini]="Gemini (Antigravity)" [gemini_cli]="Gemini CLI" [opencode]="OpenCode" [vibe]="Mistral Vibe")
@@ -186,10 +257,11 @@ install_skills_for_agent() {
         fi
         
         if [[ "$should_install" -eq 1 ]]; then
+            local action_label="$agent_name / $skill_name"
+            install_item "$source_path" "$skill_dest" "$action_label"
+            local ret=$?
+
             if [[ "$DRY_RUN" -eq 1 ]]; then
-                [[ "$is_update" -eq 1 ]] && msg_dryrun "[$agent_name] Would remove old version: $skill_dest"
-                msg_dryrun "[$agent_name] Would copy from: $source_path"
-                msg_dryrun "[$agent_name] Would copy to: $skill_dest"
                 if [[ "$is_update" -eq 1 ]]; then
                     echo -e "${MAGENTA}  [DRY RUN] Would update successfully${NC}"
                     ((updated++))
@@ -197,22 +269,16 @@ install_skills_for_agent() {
                     echo -e "${MAGENTA}  [DRY RUN] Would install successfully${NC}"
                     ((installed++))
                 fi
-            else
+            elif [[ $ret -eq 0 ]]; then
                 if [[ "$is_update" -eq 1 ]]; then
-                    rm -rf "$skill_dest"
-                fi
-                cp -R "$source_path" "$skill_dest"
-                if [[ $? -eq 0 ]]; then
-                    if [[ "$is_update" -eq 1 ]]; then
-                        msg_success "  ✓ Updated successfully"
-                        ((updated++))
-                    else
-                        msg_success "  ✓ Installed successfully"
-                        ((installed++))
-                    fi
+                    msg_success "  ✓ Updated successfully"
+                    ((updated++))
                 else
-                    msg_error "  ✗ Failed to copy"
+                    msg_success "  ✓ Installed successfully"
+                    ((installed++))
                 fi
+            else
+                msg_error "  ✗ Failed to install"
             fi
         else
             msg_warning "  ○ Skipped"
@@ -248,6 +314,100 @@ install_skills_for_agent() {
     fi
 }
 
+install_subagents() {
+    local agent_home="$1"
+    local dest_dir="$agent_home/agents"
+    local source_dir="$SCRIPT_DIR/subagents"
+
+    if [[ ! -d "$source_dir" ]]; then
+        msg_verbose "No subagents directory found at $source_dir"
+        return
+    fi
+
+    echo -e "\n${CYAN}Installing subagents for OpenCode${NC}"
+    echo -e "${GRAY}Target directory: $dest_dir${NC}"
+
+    shopt -s nullglob
+    local files=( "$source_dir"/*.md )
+    shopt -u nullglob
+
+    if [[ ${#files[@]} -eq 0 ]]; then
+        msg_warning "  No subagent files found in $source_dir"
+        return
+    fi
+
+    local installed=0
+
+    for file in "${files[@]}"; do
+        local filename
+        filename="$(basename "$file")"
+        local dest="$dest_dir/$filename"
+
+        echo -e "${GRAY}  Subagent: ${NC}${MAGENTA}$filename${NC}"
+
+        install_item "$file" "$dest" "OpenCode Subagent / $filename"
+        local ret=$?
+
+        if [[ "$DRY_RUN" -eq 1 ]] || [[ $ret -eq 0 ]]; then
+            ((installed++))
+        fi
+    done
+
+    echo ""
+    echo -e "${GRAY}══════════════════════════════════════════════════${NC}"
+    if [[ "$DRY_RUN" -eq 1 ]]; then
+        echo -e "${MAGENTA}Summary (DRY RUN) - OpenCode Subagents:${NC}"
+        echo -e "${MAGENTA}  Would install: $installed${NC}"
+    else
+        echo -e "${CYAN}Summary - OpenCode Subagents:${NC}"
+        echo -e "${GREEN}  Installed: $installed${NC}"
+    fi
+    echo -e "${GRAY}══════════════════════════════════════════════════${NC}"
+}
+
+install_dispatch_script() {
+    local source="$SCRIPT_DIR/scripts/dispatch.sh"
+    local dest_dir="$HOME/.local/bin"
+    local dest="$dest_dir/dispatch-openagent"
+
+    if [[ ! -f "$source" ]]; then
+        msg_verbose "No dispatch script found at $source"
+        return
+    fi
+
+    echo -e "\n${CYAN}Installing dispatch script${NC}"
+    echo -e "${GRAY}Source: $source${NC}"
+    echo -e "${GRAY}Destination: $dest${NC}"
+
+    if [[ ! -d "$dest_dir" ]]; then
+        if [[ "$DRY_RUN" -eq 1 ]]; then
+            msg_dryrun "Would create directory: $dest_dir"
+        else
+            mkdir -p "$dest_dir"
+        fi
+    fi
+
+    install_item "$source" "$dest" "Dispatch Script"
+
+    if [[ "$DRY_RUN" -eq 0 ]] && [[ -f "$dest" ]]; then
+        chmod +x "$dest"
+        msg_verbose "Made executable: $dest"
+    fi
+
+    echo ""
+    echo -e "${GRAY}══════════════════════════════════════════════════${NC}"
+    if [[ "$DRY_RUN" -eq 1 ]]; then
+        echo -e "${MAGENTA}Summary (DRY RUN) - Dispatch Script:${NC}"
+        echo -e "${MAGENTA}  Would install: dispatch-openagent -> $dest${NC}"
+    else
+        echo -e "${CYAN}Summary - Dispatch Script:${NC}"
+        if [[ -f "$dest" ]]; then
+            echo -e "${GREEN}  Installed: dispatch-openagent -> $dest${NC}"
+        fi
+    fi
+    echo -e "${GRAY}══════════════════════════════════════════════════${NC}"
+}
+
 for agent_key in "${SELECTED_AGENTS[@]}"; do
     agent_home=$(resolve_agent_home "$agent_key")
     msg_info "${AGENT_NAMES[$agent_key]} home directory: $agent_home"
@@ -263,6 +423,11 @@ for agent_key in "${SELECTED_AGENTS[@]}"; do
     fi
     
     install_skills_for_agent "$agent_key" "$dest_dir"
+
+    if [[ "$agent_key" == "opencode" ]]; then
+        install_subagents "$agent_home"
+        install_dispatch_script
+    fi
 done
 
 exit 0
