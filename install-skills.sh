@@ -26,8 +26,9 @@ Install or update skills to local agent home directories.
 By default on Linux/macOS, skills are installed as symlinks so edits propagate
 live. On other platforms (or when --copy is passed), files are copied instead.
 
-In addition to skills, this script installs OpenCode subagents (subagents/*.md)
-and a dispatch script (skills/orchestrator/scripts/dispatch.sh) when OpenCode is selected.
+Let you choose which agents to install skills for; agents whose binary
+is not found on PATH are skipped automatically. This script also
+installs OpenCode subagents (subagents/*.md) when OpenCode is selected.
 
 Options:
   -y                  Skip confirmation prompts and install/update all skills automatically
@@ -144,6 +145,7 @@ declare -A AGENT_NAMES=([claude]="Claude Code" [codex]="Codex" [gemini]="Gemini 
 declare -A AGENT_ENV=([claude]="CLAUDE_HOME" [codex]="CODEX_HOME" [gemini]="GEMINI_HOME" [gemini_cli]="GEMINI_HOME" [opencode]="OPENCODE_HOME" [vibe]="VIBE_HOME")
 declare -A AGENT_DEFAULT_DIR=([claude]=".claude" [codex]=".codex" [gemini]=".gemini" [gemini_cli]=".gemini" [opencode]=".config/opencode" [vibe]=".vibe")
 declare -A AGENT_SKILLS_SUBDIR=([claude]="skills" [codex]="skills" [gemini]="antigravity/global_skills" [gemini_cli]="skills" [opencode]="skills" [vibe]="skills")
+declare -A AGENT_BINARY=([claude]="claude" [codex]="codex" [gemini]="gemini" [gemini_cli]="gemini" [opencode]="opencode" [vibe]="vibe")
 
 SELECTED_AGENTS=("claude" "codex" "gemini" "gemini_cli" "opencode" "vibe")
 
@@ -365,53 +367,19 @@ install_subagents() {
     echo -e "${GRAY}══════════════════════════════════════════════════${NC}"
 }
 
-install_dispatch_script() {
-    local source="$SCRIPT_DIR/skills/orchestrator/scripts/dispatch.sh"
-    local dest_dir="$HOME/.local/bin"
-    local dest="$dest_dir/dispatch-openagent"
-
-    if [[ ! -f "$source" ]]; then
-        msg_verbose "No dispatch script found at $source"
-        return
-    fi
-
-    echo -e "\n${CYAN}Installing dispatch script${NC}"
-    echo -e "${GRAY}Source: $source${NC}"
-    echo -e "${GRAY}Destination: $dest${NC}"
-
-    if [[ ! -d "$dest_dir" ]]; then
-        if [[ "$DRY_RUN" -eq 1 ]]; then
-            msg_dryrun "Would create directory: $dest_dir"
-        else
-            mkdir -p "$dest_dir"
-        fi
-    fi
-
-    install_item "$source" "$dest" "Dispatch Script"
-
-    if [[ "$DRY_RUN" -eq 0 ]] && [[ -f "$dest" ]]; then
-        chmod +x "$dest"
-        msg_verbose "Made executable: $dest"
-    fi
-
-    echo ""
-    echo -e "${GRAY}══════════════════════════════════════════════════${NC}"
-    if [[ "$DRY_RUN" -eq 1 ]]; then
-        echo -e "${MAGENTA}Summary (DRY RUN) - Dispatch Script:${NC}"
-        echo -e "${MAGENTA}  Would install: dispatch-openagent -> $dest${NC}"
-    else
-        echo -e "${CYAN}Summary - Dispatch Script:${NC}"
-        if [[ -f "$dest" ]]; then
-            echo -e "${GREEN}  Installed: dispatch-openagent -> $dest${NC}"
-        fi
-    fi
-    echo -e "${GRAY}══════════════════════════════════════════════════${NC}"
-}
+PROCESSED_AGENTS=()
+SKIPPED_AGENTS=()
 
 for agent_key in "${SELECTED_AGENTS[@]}"; do
+    if ! command -v "${AGENT_BINARY[$agent_key]}" &>/dev/null; then
+        msg_warning "${AGENT_NAMES[$agent_key]}: binary '${AGENT_BINARY[$agent_key]}' not found — skipping"
+        SKIPPED_AGENTS+=("${AGENT_NAMES[$agent_key]}")
+        continue
+    fi
+
     agent_home=$(resolve_agent_home "$agent_key")
     msg_info "${AGENT_NAMES[$agent_key]} home directory: $agent_home"
-    
+
     dest_dir="$agent_home/${AGENT_SKILLS_SUBDIR[$agent_key]}"
     if [[ ! -d "$dest_dir" ]]; then
         if [[ "$DRY_RUN" -eq 1 ]]; then
@@ -421,13 +389,30 @@ for agent_key in "${SELECTED_AGENTS[@]}"; do
             mkdir -p "$dest_dir"
         fi
     fi
-    
+
     install_skills_for_agent "$agent_key" "$dest_dir"
+    PROCESSED_AGENTS+=("${AGENT_NAMES[$agent_key]}")
 
     if [[ "$agent_key" == "opencode" ]]; then
         install_subagents "$agent_home"
-        install_dispatch_script
     fi
 done
+
+echo -e "\n${CYAN}════════════════════════════════════════════════════════${NC}"
+echo -e "${CYAN}  FINAL RECAP${NC}"
+echo -e "${CYAN}════════════════════════════════════════════════════════${NC}"
+if [[ ${#PROCESSED_AGENTS[@]} -gt 0 ]]; then
+    echo -e "${GREEN}  Processed:${NC}"
+    for name in "${PROCESSED_AGENTS[@]}"; do
+        echo -e "${GREEN}    ✓ $name${NC}"
+    done
+fi
+if [[ ${#SKIPPED_AGENTS[@]} -gt 0 ]]; then
+    echo -e "${YELLOW}  Skipped (not installed):${NC}"
+    for name in "${SKIPPED_AGENTS[@]}"; do
+        echo -e "${YELLOW}    ○ $name${NC}"
+    done
+fi
+echo -e "${CYAN}════════════════════════════════════════════════════════${NC}"
 
 exit 0

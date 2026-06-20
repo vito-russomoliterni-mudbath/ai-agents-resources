@@ -9,6 +9,7 @@
     ~/.gemini/antigravity/global_skills/, ~/.config/opencode/skills/, ~/.vibe/skills/).
     It will prompt for confirmation before installing or updating each skill, showing which files
     will be affected. Use the -y flag to skip confirmations and install/update all skills automatically.
+    Agents whose binary is not found on PATH are skipped automatically.
 
 .PARAMETER y
     Skip confirmation prompts and install/update all skills automatically.
@@ -139,12 +140,12 @@ function Resolve-AgentHome {
 }
 
 $agents = @(
-    [pscustomobject]@{ Key = "claude"; DisplayName = "Claude Code"; EnvVar = "CLAUDE_HOME"; DefaultFolder = ".claude"; SkillsFolder = "skills" },
-    [pscustomobject]@{ Key = "codex"; DisplayName = "Codex"; EnvVar = "CODEX_HOME"; DefaultFolder = ".codex"; SkillsFolder = "skills" },
-    [pscustomobject]@{ Key = "gemini"; DisplayName = "Gemini (Antigravity)"; EnvVar = "GEMINI_HOME"; DefaultFolder = ".gemini"; SkillsFolder = "antigravity/global_skills" },
-    [pscustomobject]@{ Key = "gemini_cli"; DisplayName = "Gemini CLI"; EnvVar = "GEMINI_HOME"; DefaultFolder = ".gemini"; SkillsFolder = "skills" },
-    [pscustomobject]@{ Key = "opencode"; DisplayName = "OpenCode"; EnvVar = "OPENCODE_HOME"; DefaultFolder = ".config/opencode"; SkillsFolder = "skills" },
-    [pscustomobject]@{ Key = "vibe"; DisplayName = "Mistral Vibe"; EnvVar = "VIBE_HOME"; DefaultFolder = ".vibe"; SkillsFolder = "skills" }
+    [pscustomobject]@{ Key = "claude"; DisplayName = "Claude Code"; EnvVar = "CLAUDE_HOME"; DefaultFolder = ".claude"; SkillsFolder = "skills"; Binary = "claude" },
+    [pscustomobject]@{ Key = "codex"; DisplayName = "Codex"; EnvVar = "CODEX_HOME"; DefaultFolder = ".codex"; SkillsFolder = "skills"; Binary = "codex" },
+    [pscustomobject]@{ Key = "gemini"; DisplayName = "Gemini (Antigravity)"; EnvVar = "GEMINI_HOME"; DefaultFolder = ".gemini"; SkillsFolder = "antigravity/global_skills"; Binary = "gemini" },
+    [pscustomobject]@{ Key = "gemini_cli"; DisplayName = "Gemini CLI"; EnvVar = "GEMINI_HOME"; DefaultFolder = ".gemini"; SkillsFolder = "skills"; Binary = "gemini" },
+    [pscustomobject]@{ Key = "opencode"; DisplayName = "OpenCode"; EnvVar = "OPENCODE_HOME"; DefaultFolder = ".config/opencode"; SkillsFolder = "skills"; Binary = "opencode" },
+    [pscustomobject]@{ Key = "vibe"; DisplayName = "Mistral Vibe"; EnvVar = "VIBE_HOME"; DefaultFolder = ".vibe"; SkillsFolder = "skills"; Binary = "vibe" }
 )
 
 $selectedAgentKeys = @("claude", "codex", "gemini", "gemini_cli", "opencode", "vibe")
@@ -475,6 +476,9 @@ function Install-SkillsForAgent {
     }
 }
 
+$processedAgents = @()
+$skippedAgents = @()
+
 foreach ($agentKey in $selectedAgentKeys) {
     $agent = $agents | Where-Object { $_.Key -eq $agentKey }
     if (-not $agent) {
@@ -482,10 +486,15 @@ foreach ($agentKey in $selectedAgentKeys) {
         continue
     }
 
+    if (-not (Get-Command $agent.Binary -ErrorAction SilentlyContinue)) {
+        Write-Warning-Custom "$($agent.DisplayName): binary '$($agent.Binary)' not found — skipping"
+        $skippedAgents += $agent.DisplayName
+        continue
+    }
+
     $agentHome = Resolve-AgentHome -AgentName $agent.DisplayName -EnvVarName $agent.EnvVar -DefaultFolderName $agent.DefaultFolder
     Write-Info "$($agent.DisplayName) home directory: $agentHome"
 
-    # Create skills directory if it doesn't exist
     $skillsDestDir = Join-Path $agentHome $agent.SkillsFolder
     if (-not (Test-Path $skillsDestDir)) {
         if ($DryRun) {
@@ -500,6 +509,23 @@ foreach ($agentKey in $selectedAgentKeys) {
     }
 
     Install-SkillsForAgent -AgentDisplayName $agent.DisplayName -SkillsDestDir $skillsDestDir -Skills $skillsToInstall | Out-Null
+    $processedAgents += $agent.DisplayName
 }
 
-exit 0
+Write-Host ""
+Write-Host "════════════════════════════════════════════════════════" -ForegroundColor Cyan
+Write-Host "  FINAL RECAP" -ForegroundColor Cyan
+Write-Host "════════════════════════════════════════════════════════" -ForegroundColor Cyan
+if ($processedAgents.Count -gt 0) {
+    Write-Host "  Processed:" -ForegroundColor Green
+    foreach ($name in $processedAgents) {
+        Write-Host "    ✓ $name" -ForegroundColor Green
+    }
+}
+if ($skippedAgents.Count -gt 0) {
+    Write-Host "  Skipped (not installed):" -ForegroundColor Yellow
+    foreach ($name in $skippedAgents) {
+        Write-Host "    ○ $name" -ForegroundColor Yellow
+    }
+}
+Write-Host "════════════════════════════════════════════════════════" -ForegroundColor Cyan

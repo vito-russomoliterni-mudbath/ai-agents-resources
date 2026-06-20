@@ -136,7 +136,8 @@ cd ai-agents-resources
 The script will:
 - Let you choose which agents to install skills for (Claude Code, Codex, Gemini, OpenCode, Mistral Vibe, or All)
 - On Linux/macOS, install skills as **symlinks** by default so edits propagate live; use `--copy` to copy instead
-- When OpenCode is selected, also install **subagents** (`subagents/*.md` → `~/.config/opencode/agents/`) and the **dispatch script** (`skills/orchestrator/scripts/dispatch.sh` → `~/.local/bin/dispatch-openagent`)
+- When OpenCode is selected, also install **subagents** (`subagents/*.md` → `~/.config/opencode/agents/`)
+- Skip agents whose binary is not found on PATH, and show only processed agents in the final recap
 - Show which files will be added, updated, or deleted before making changes
 - Ask for confirmation before each skill (unless using `-y` flag)
 - Clean up old versions before installing new ones (prevents orphaned files)
@@ -269,4 +270,4 @@ Compatible with Claude Code, OpenCode, Mistral Vibe, Codex, and Gemini CLI via t
 ---
 
 **Version:** 1.0.0
-**Last Updated:** 2026-02-11
+**Last Updated:** 2026-06-20

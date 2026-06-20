@@ -60,7 +60,7 @@ Each skill directory contains:
 ```
 
 By default on Linux/macOS, skills are installed as **symlinks** so edits in the source repo propagate live.
-Subagents (`subagents/*.md`) and the dispatch script (`scripts/dispatch.sh`) are automatically installed
+Subagents (`subagents/*.md`) are automatically installed
 when OpenCode is selected.
 
 **Windows (PowerShell):**

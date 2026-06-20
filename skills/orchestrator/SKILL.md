@@ -47,17 +47,16 @@ Read-only agents are read-only by permission — a bad prompt cannot corrupt fil
 
 ## Dispatch Command
 
-One template for all three — swap the agent name, `--dir`, and prompt. The model is pinned in each agent file, so no `--model`:
+Use `scripts/dispatch.sh`, bundled with this skill:
 
 ```bash
-opencode run --agent <researcher|editor|reviewer> --format json --dir <repo-path> "<prompt>" \
-  | jq -r 'select(.type=="text") | .part.text'
+scripts/dispatch.sh <researcher|editor|reviewer> <repo-path> "<prompt>"
 ```
 
-- `--format json` + the `jq` filter return only the final answer text.
-- Attach a file with `--file/-f <path>`; continue a session with `--session/-s <id>` (the id appears in the JSON events).
+- Returns only the final answer text.
 - Run several dispatches in parallel (independent tasks) by issuing multiple shell calls at once.
-- To inspect what the editor changed, drop the `jq` filter and read `tool_use` events.
+- To inspect what the editor changed, run `opencode run --format json` directly and read `tool_use` events.
+- Override models via env vars: `OPENCODE_DISPATCH_MODEL` (primary) and `OPENCODE_DISPATCH_FALLBACK` (fallback).
 
 ## Writing the Prompt (this is where dispatches fail)
 
@@ -87,7 +86,3 @@ These thoughts are traps. Recognise them and dispatch anyway:
 - Forgetting `--dir` — the subagent runs in the wrong tree and finds nothing.
 - An agent saved as `mode: subagent` — `opencode run` silently falls back to the default (editing) agent. Agents must be `mode: all`.
 - Trusting a non-trivial edit blind — dispatch `reviewer` or read the diff before accepting.
-
-## Design Note
-
-Raw commands live here intentionally (no wrapper script) — the pipeline is short and per-dispatch flags must stay visible. If retry logic or session chaining becomes routine, extract `scripts/dispatch.sh` then.
