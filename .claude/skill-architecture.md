@@ -41,7 +41,6 @@ Each phase uses specific Claude Code tools:
 Skills handle different scopes:
 - **Interactive** - Ask the user questions iteratively to reach shared understanding (`grill-me`)
 - **Delegation-based** - Dispatch subagents and synthesise results (`orchestrator`, `showlinks`)
-- **Lifecycle-based** - Manage an external resource through its full lifecycle ()
 
 ## Progressive Disclosure Principle
 

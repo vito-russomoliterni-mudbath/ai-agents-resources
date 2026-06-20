@@ -66,6 +66,7 @@ Research topics by finding official documentation and reputable sources, then de
 **Workflow:** Find official docs → Confirm version match → Dispatch reviewer subagent → Refine if rejected → Return vetted links
 
 ---
+
 ## Archived Skills
 
 The following skills are preserved in [`archive/`](archive/) but are no longer

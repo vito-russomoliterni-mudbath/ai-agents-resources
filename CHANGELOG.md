@@ -6,7 +6,7 @@
 - **Mistral Vibe support** — added to both `install-skills.sh` and `install-skills.ps1` as agent key `vibe` (home `~/.vibe/`, skills subdir `skills/`, env override `VIBE_HOME`). Selectable as option 5 in the agent prompt; "All" shifts to option 6. Also documented in the manual installation table in README.
 
 ### Changed
-- **Reduced active skill set to 4** — `grill-me`, `orchestrator`, `show-links` are the only skills auto-installed going forward. The install script discovers skills by enumerating `skills/`, so moving the rest to `archive/` is sufficient to stop auto-installation.
+- **Reduced active skill set to 3** — `grill-me`, `orchestrator`, `show-links` are the only skills auto-installed going forward. The install script discovers skills by enumerating `skills/`, so moving the rest to `archive/` is sufficient to stop auto-installation.
 - **Archived 13 skills** — moved to `archive/` (preserved in git history, not deleted): `adding-memory`, `adding-tests`, `building-features`, `building-skills`, `cleaning-git-branches`, `creating-automation-scripts`, `creating-subagents`, `fixing-bugs`, `plan-reviewer`, `refactoring-agent-instructions`, `refactoring-code`, `reviewing-pr-links`, `running-isolated-subagents`.
 - Updated `README.md`, `AGENTS.md`/`CLAUDE.md`, `.claude/skill-reference.md`, `.claude/skill-architecture.md` to reflect the reduced active set.
 

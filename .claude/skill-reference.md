@@ -18,14 +18,6 @@ Quick reference for each active skill's unique characteristics and workflows.
 
 **Workflow:** Dispatch `researcher` → review summary → dispatch `editor` → dispatch `reviewer`
 
-## 
-
-**Purpose:** Publish an ephemeral dev app running in a container behind a public Traefik-backed URL.
-
-**Key Feature:** Manages the Traefik reverse-proxy route and container firewall port lifecycle. Includes known gotchas for Vite host checks and orphan processes.
-
-**Workflow:** Start app → patch allowedHosts if Vite → publish → work → remove route
-
 ## showlinks
 
 **Purpose:** Find official documentation and reputable sources for a topic, then return direct vetted links.
