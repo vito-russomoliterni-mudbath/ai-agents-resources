@@ -67,6 +67,18 @@ Research topics by finding official documentation and reputable sources, then de
 
 ---
 
+### 🪵 [show-logs](skills/show-logs/)
+Research log locations (file paths, journald units, container log commands) by finding official documentation and reputable sources, then deliver direct log paths/commands with recommendations.
+
+**Use when:**
+- User asks to debug a crash, investigate logs, or find log files
+- Determining why a service/process failed
+- Locating log commands for any application or system service
+
+**Workflow:** Find official docs via MCP servers → Confirm version match → Dispatch reviewer subagent → Refine if rejected → Return vetted log paths/commands
+
+---
+
 ## Archived Skills
 
 The following skills are preserved in [`archive/`](archive/) but are no longer
