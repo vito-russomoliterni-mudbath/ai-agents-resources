@@ -1,5 +1,7 @@
 # Claude Code local settings (user-specific)
 .claude/settings.local.json
+# Agent/session worktrees created under the project .claude directory
+.claude/worktrees/
 
 # Antigravity CLI local state
 .antigravitycli/
